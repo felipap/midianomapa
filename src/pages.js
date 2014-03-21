@@ -192,7 +192,7 @@ Events = {
   search_get: function(req, res) {
     var access_token, added, count, tag, tags, _i, _len, _results;
     access_token = req.query.access_token || '';
-    tags = ['passeata', 'protesto', 'manifestação', 'ato+apoio', 'ato+contra', 'ato+em', 'mobilização+contra'];
+    tags = ['passeata'];
     added = [];
     count = tags.length;
     res.connection.setTimeout(0);

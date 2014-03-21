@@ -81,14 +81,18 @@ NinjaSchema.statics.flushCache = function(cb) {
 
 NinjaSchema.statics.getCached = function(cb) {
   return mc.get('ninjas', function(err, val, key) {
+    var ret;
     if (err) {
       console.warn('Cache error:', err);
       this.findVisible(cb);
-    }
-    if (val === null) {
+      ret = [];
+    } else if (val === null) {
       console.warn('Cache query for ninjas returned null.');
+      ret = [];
+    } else {
+      ret = JSON.parse(val.toString());
     }
-    return cb(null, JSON.parse(val.toString()));
+    return cb(null, ret);
   });
 };
 

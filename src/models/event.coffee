@@ -37,6 +37,7 @@ mongoose = require 'mongoose'
 request = require 'request'
 crypto = require 'crypto'
 memjs = require 'memjs'
+async = require 'async'
 _ = require 'underscore'
 
 findOrCreate = require('./lib/findOrCreate')
@@ -123,32 +124,8 @@ eventExceptions = {
 }
 
 
-
 fbEventValidator = createValidator(eventExceptions)
 
-####################################################################################################
-####################################################################################################
-
-###
-A Queue.
-Call .inc() to increment count of expected objects.
-Call .dec(obj) to decrement count of expected objects and add object to list.
-###
-class Queue extends Array	
-	
-	constructor: (@count=0) ->	
-		super
-	
-	inc: -> @count++
-
-	dec: (x) ->
-		# console.log('dec called', @count-1)
-		@push(x) if x
-		return not --@count
-
-	toList: -> @slice()
-
-	isEmpty: -> @count is 0
 
 ####################################################################################################
 ####################################################################################################
@@ -193,7 +170,7 @@ EventSchema.virtual('url').get ->
 ####################################################################################################
 ####################################################################################################
 
-toFbObject = toFbObject = (data) ->
+toFbObject = (data) ->
 	return {
 		id: 			data.id
 		name: 			data.name
@@ -340,15 +317,13 @@ EventSchema.statics.crawlAndAdd = (tag, access_token, callback) ->
 		if body.data.length is 0
 			return callback(null,[])
 
-		found = new Queue(body.data.length)
-		for event in body.data
+		async.map body.data, ((event, next) ->
 			onGetValidEvent = (obj) =>
+				console.log "find event", obj
 				addAlready = (fbObj) =>
 					fbObj.isUserInput = false
-					@findOrCreate {id:obj.id}, fbObj, (err, result, isNew) ->			
-						found.dec(result)
-						if not found.count
-							callback(null, found.toList())
+					@findOrCreate {id:obj.id}, fbObj, (err, result, isNew) ->
+						next(err, result)
 
 				if obj.venue and obj.venue.latitude
 					addAlready(toFbObject(obj))
@@ -359,20 +334,12 @@ EventSchema.statics.crawlAndAdd = (tag, access_token, callback) ->
 						addAlready(toFbObject(obj))				
 					gMapsRequester.getValidCoord(obj.location)
 						.done(onGetValidMapsCoord)
-						.fail((err) ->
-							found.dec()
-							if not found.count
-								callback(null, found.toList())
-						)
+						.fail((err) -> next())
 			fbRequester.getEvent(event.id, access_token)
 				.validate(fbEventValidator('validTimezone','notOutdated','withinTwoMonths','bigEnough30','isntSPAM','notBlocked'))
 				.done(onGetValidEvent)
-				.fail(genericErrorHandler((err) ->
-					found.dec()
-					if not found.count
-						callback(null, found.toList())
-				))
-
+				.fail(genericErrorHandler((err) -> (next())))
+		), callback
 
 	fbRequester.getIdsOfEventsWithTag(tag,access_token)
 		.done(onGetIds)

@@ -141,7 +141,7 @@ Events = {
 
 	search_get: (req, res) ->
 		access_token = req.query.access_token or ''
-		tags = ['passeata','protesto','manifestação','ato+apoio','ato+contra','ato+em','mobilização+contra']
+		tags = ['passeata'] # ,'protesto','manifestação','ato+apoio','ato+contra','ato+em','mobilização+contra']
 
 		added = []
 		count = tags.length

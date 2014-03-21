@@ -32,7 +32,7 @@
     "ejs": "0.8.3",
     "jade": "0.28.2",
     "underscore": "1.4.4",
-    "async": "0.1.18",
+    "async": "^0.1.18",
     "request": "2.22.0",
     "consolidate": "~0.9.1",
     "connect-mongo": "~0.3.3",

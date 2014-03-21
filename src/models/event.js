@@ -1,9 +1,8 @@
 /*
 # models/event.coffee
 # Event model.
-*/
 
-/*
+
 Sample Facebook event.
 reference: https://developers.facebook.com/docs/reference/api/event/
 These fields are not always complete/existent.
@@ -33,10 +32,8 @@ These fields are not always complete/existent.
 }
 */
 
-var BLOCKED_IDS, BannedEventsSchema, Event, EventSchema, MIN_COUNT, Queue, RequestDeferer, SEARCH_N_ADD_MINCOUNT, VALID_TMZs, createValidator, crypto, eventExceptions, fbEventValidator, fbRequester, findOrCreate, gMapsRequester, genericErrorHandler, log, memjs, mongoose, notNull, notOver, request, toFbObject, _,
-  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+var BLOCKED_IDS, BannedEventsSchema, Event, EventSchema, MIN_COUNT, RequestDeferer, SEARCH_N_ADD_MINCOUNT, VALID_TMZs, async, createValidator, crypto, eventExceptions, fbEventValidator, fbRequester, findOrCreate, gMapsRequester, genericErrorHandler, log, memjs, mongoose, notNull, notOver, request, toFbObject, _,
+  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 mongoose = require('mongoose');
 
@@ -45,6 +42,8 @@ request = require('request');
 crypto = require('crypto');
 
 memjs = require('memjs');
+
+async = require('async');
 
 _ = require('underscore');
 
@@ -150,44 +149,6 @@ eventExceptions = {
 
 fbEventValidator = createValidator(eventExceptions);
 
-/*
-A Queue.
-Call .inc() to increment count of expected objects.
-Call .dec(obj) to decrement count of expected objects and add object to list.
-*/
-
-
-Queue = (function(_super) {
-  __extends(Queue, _super);
-
-  function Queue(count) {
-    this.count = count != null ? count : 0;
-    Queue.__super__.constructor.apply(this, arguments);
-  }
-
-  Queue.prototype.inc = function() {
-    return this.count++;
-  };
-
-  Queue.prototype.dec = function(x) {
-    if (x) {
-      this.push(x);
-    }
-    return !--this.count;
-  };
-
-  Queue.prototype.toList = function() {
-    return this.slice();
-  };
-
-  Queue.prototype.isEmpty = function() {
-    return this.count === 0;
-  };
-
-  return Queue;
-
-})(Array);
-
 notNull = function(v) {
   return v !== null && v !== void 0;
 };
@@ -255,7 +216,7 @@ EventSchema.virtual('url').get(function() {
   return 'http://vempraruavem.org/#events/' + this.id;
 });
 
-toFbObject = toFbObject = function(data) {
+toFbObject = function(data) {
   var _ref;
   return {
     id: data.id,
@@ -435,26 +396,21 @@ EventSchema.statics.crawlAndAdd = function(tag, access_token, callback) {
   var onGetIds,
     _this = this;
   onGetIds = function(body) {
-    var event, found, onGetValidEvent, _i, _len, _ref, _results;
     if (body.data.length === 0) {
       return callback(null, []);
     }
-    found = new Queue(body.data.length);
-    _ref = body.data;
-    _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      event = _ref[_i];
+    return async.map(body.data, (function(event, next) {
+      var onGetValidEvent,
+        _this = this;
       onGetValidEvent = function(obj) {
         var addAlready, onGetValidMapsCoord;
+        console.log("find event", obj);
         addAlready = function(fbObj) {
           fbObj.isUserInput = false;
           return _this.findOrCreate({
             id: obj.id
           }, fbObj, function(err, result, isNew) {
-            found.dec(result);
-            if (!found.count) {
-              return callback(null, found.toList());
-            }
+            return next(err, result);
           });
         };
         if (obj.venue && obj.venue.latitude) {
@@ -466,21 +422,14 @@ EventSchema.statics.crawlAndAdd = function(tag, access_token, callback) {
             return addAlready(toFbObject(obj));
           };
           return gMapsRequester.getValidCoord(obj.location).done(onGetValidMapsCoord).fail(function(err) {
-            found.dec();
-            if (!found.count) {
-              return callback(null, found.toList());
-            }
+            return next();
           });
         }
       };
-      _results.push(fbRequester.getEvent(event.id, access_token).validate(fbEventValidator('validTimezone', 'notOutdated', 'withinTwoMonths', 'bigEnough30', 'isntSPAM', 'notBlocked')).done(onGetValidEvent).fail(genericErrorHandler(function(err) {
-        found.dec();
-        if (!found.count) {
-          return callback(null, found.toList());
-        }
-      })));
-    }
-    return _results;
+      return fbRequester.getEvent(event.id, access_token).validate(fbEventValidator('validTimezone', 'notOutdated', 'withinTwoMonths', 'bigEnough30', 'isntSPAM', 'notBlocked')).done(onGetValidEvent).fail(genericErrorHandler(function(err) {
+        return next();
+      }));
+    }), callback);
   };
   return fbRequester.getIdsOfEventsWithTag(tag, access_token).done(onGetIds).fail(genericErrorHandler(function(err) {
     console.log('no ids', err);
@@ -738,6 +687,7 @@ EventSchema.statics.getCached = function(cb) {
   var mc;
   mc = memjs.Client.create();
   return mc.get('events', function(err, val, key) {
+    var ret;
     if (err) {
       console.warn('Cache error:', err);
       this.find({
@@ -745,11 +695,14 @@ EventSchema.statics.getCached = function(cb) {
           $gte: new Date(new Date().setHours(0, 0, 0, 0))
         }
       }, cb);
-    }
-    if (val === null) {
+      ret = [];
+    } else if (val === null) {
       console.warn('Cache query for events returned null.');
+      ret = [];
+    } else {
+      ret = JSON.parse(val.toString());
     }
-    return cb(null, JSON.parse(val.toString()));
+    return cb(null, ret);
   });
 };
 
