@@ -17,13 +17,15 @@ body {
 
 #msg { font-weight: bold; }
 
+@navbar-bg: #31322E;
 
 header {
 	.navbar();
 	// .navbar-inverse();
 	.navbar-static-top();
 	.hidden-print();
-	@color: #444;
+	@color: white;
+	// @navbar-inverse-bg:;
 	
 	min-height: inherit;
 	margin-bottom: 0;
@@ -33,6 +35,8 @@ header {
 
 	p {
 		.navbar-text();
+		font-size: 12px;
+		color: @color;
 	}
 
 	.brand-wrapper {
@@ -49,7 +53,9 @@ header {
 		.navbar-header();
 
 		.navbar-brand {
-			font-weight: 800;
+			// font-weight: 800;
+			font-family: Montserrat;
+			color: white;
 			letter-spacing: -1px;
 			
 			&:active {text-shadow: none;}
@@ -64,7 +70,7 @@ header {
 	}
 
 	.misc {
-		background: white;
+		background: @navbar-bg;
 
 		.navbar-collapse();
 		.collapse();
@@ -95,19 +101,27 @@ header {
 				font-weight: bold;
 			}
 
+			li > a, li > button {
+				color: white;
+				.text-shadow(4px,.4);
+				&:hover {
+					background: none;
+					text-decoration: underline;
+				}
+				// .invert(@navbar-inverse-bg, @navbar-bg);
+			}
+
 			a.active {
 				.inner-shadow(0,0,5px);
-				background: #2980b9;
+				background: #2980b9 !important;
+				// background: ;
 			}
 
 			.active a {
-				background: #3498db;
+				// background: #3498db;
 				&:hover { background: lighten(#3498db,10%); };
 			}
 
-			li > a, li > button {
-				.invert(@navbar-inverse-bg, contrast(@color));
-			}
 		}
 
 		#date-wrapper {
@@ -117,6 +131,7 @@ header {
 
 			#date {
 				width: 101px;
+				text-decoration: none;
 				text-align: center;
 				.reset-button();
 				border-radius: 0;
@@ -207,15 +222,15 @@ footer {
 
 	padding-top: 30px;
 	padding-bottom: 20px;
-	background: #2C3E50;
+	background: @navbar-bg;
 	text-shadow: 0 1px 3px rgba(0,0,0,.4);
 	
 	color: white;
 	font-size: 13px;
 	// .inner-shadow(0,5px,10px,.4);
-	.box-shadow(0,-3px,5px,rgba(0,0,0,.2));	
-position: relative;
+	// .box-shadow(0,-3px,5px,rgba(0,0,0,.2));	
 	// border: 1px solid black;
+	position: relative;
 	
 	p {
 		text-align: justify;
