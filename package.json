@@ -1,0 +1,48 @@
+{
+  "name": "vempraruavem",
+  "version": "0.7.0",
+  "private": true,
+  "homepage": "http://vempraruavem.org",
+  "readmeFilename": "README.md",
+  "gitHead": "a9ef3dfea8d0873be9a7d7f78b211a0abc978de6",
+  "author": "Felipe Aragão Pires",
+  "license": "BSD",
+  "description": "Acompanhe a Mídia Independente nas Manifestações pelo Brasil.",
+  "main": "app.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:f03lipe/vempraruavem.git"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-less": "~0.8.3",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-nodemon": "~0.1.2",
+    "grunt-concurrent": "~0.4.2"
+  },
+  "dependencies": {
+    "mongoose": "~3.6.5",
+    "express": "3.3.4",
+    "ejs": "0.8.3",
+    "jade": "0.28.2",
+    "underscore": "1.4.4",
+    "async": "0.1.18",
+    "request": "2.22.0",
+    "consolidate": "~0.9.1",
+    "connect-mongo": "~0.3.3",
+    "express-minify": "0.0.7",
+    "passport": "~0.1.17",
+    "passport-facebook": "~1.0.2",
+    "passport-twitter": "~1.0.2",
+    "ejs-locals": "~1.0.2",
+    "connect-flash": "~0.1.1",
+    "connect": "~2.11.0",
+    "memjs": "~0.8.1"
+  }
+}

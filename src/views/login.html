@@ -1,0 +1,24 @@
+
+<% layout('mobile') -%>
+
+<div class="wrapper col-md-4 col-md-offset-4 col-lg-6 col-lg-offset-3">
+	<div class="logo">
+		<h2><i class="fa fa-video-camera fa-lg"></i> Tá filmando um evento?</h2>
+	</div>
+	<p>
+		Aqui ativistas da mídia independente podem cadastrar os seus streams para aperecem no mapa do site. Para continuar você deve ter uma conta no <a href="http://twitcasting.tv">TwitCasting</a>. Como você <span style="text-decoration: underline">acessa</span> a sua conta no TwitCasting?</strong> Responda abaixo.
+	</p>
+
+	<div class="btngroup">
+		<button class="btn btn-primary btn-lg btn-block btn-twitter" onClick="location.href='/auth/twitter';">
+			<strong>Eu uso o Twitter &nbsp;<i class="fa fa-lg fa-twitter"></i></strong></button>
+		<button class="btn btn-primary btn-lg btn-block btn-facebook" onClick="location.href='/auth/facebook';" >
+			<strong>Eu uso o Facebook &nbsp;<i class="fa fa-lg fa-facebook"></i></strong></button>
+		<button onClick="location.href='/';" data-action="logout" class="btn btn-default btn-lg btn-block">Voltar para o site</button>
+	</div>
+
+	<div class="foot">
+		<!-- <a href="http://twitter.com/">Quer sugerir um site diferente do TwitCasting?</a> <br> -->
+		midianomapa.org &reg; 2013
+	</div>
+</div>

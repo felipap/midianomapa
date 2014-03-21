@@ -1,0 +1,33 @@
+
+// common.less
+// for midianomapa.org, by @f03lipe
+
+@import "macros.less";
+@import "font-awesome/font-awesome.less";
+@import "bstp.less";
+@import "snshare.less";
+
+.btn-facebook {
+	background: #2b4b90 !important;
+	border-color: darken(#2b4b90,5%) !important;
+}
+
+.btn-twitter {
+	background: #55ACEE !important;
+	border-color: darken(#55ACEE,5%) !important;
+}
+
+.btn-gplus {
+	background: #dd4b39 !important;
+	border-color: darken(#dd4b39,5%) !important;
+}
+
+.invert(@color, @bg) {
+	background: @bg;
+	color: @color;
+
+	&:hover {
+		background: @color;
+		color: @bg;
+	}
+}

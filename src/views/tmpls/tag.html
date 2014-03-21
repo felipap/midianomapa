@@ -1,0 +1,25 @@
+<% if (tag.checked && tag.checked !== 'false') { %>
+	<button class="btn btn-default tag tag-btn" data-checked=true >
+		<i class="icon-check-sign"></i>
+		<%= tag.label %>
+<% } else if (tag.hasCheckedChild) { %>
+	<button class="btn btn-default tag tag-btn" data-checked=false >
+		<i class="icon-check-minus"></i>
+		<%= tag.label %>
+<% } else { %>
+	<button class="btn btn-default tag tag-btn" data-checked=false>
+		<i class="icon-check-empty"></i>
+		<%= tag.label %>
+<% } %>
+		<% if (tag.description) { %>
+			<div class="btn-reset info"
+				 style="float: right; padding: 0">
+					<i class="icon-info"></i>
+			</div>
+		<% } %>
+	</button>
+<% if (!_.isEmpty(tag.children)) { %>
+	<button class="btn-reset expand">
+		<i class="icon-angle-down"></i>
+	</button>
+<% } %>

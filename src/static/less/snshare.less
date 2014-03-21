@@ -1,0 +1,46 @@
+
+// Style for social network items.
+
+.sn-share {
+	display: inline-block;
+	position: relative;
+	text-align: center;
+	cursor: pointer;
+
+	.sn-share-btns {
+		display: none;
+		position: absolute;
+		top: 0;
+		width: 200px;
+		left: -300px;
+		right: -300px;
+		margin: 0 auto;
+		margin-top: -25px;
+		text-align: center;
+		
+		.btn-group {
+			button {
+				margin-bottom: 0;
+				margin-left: 0 !important;
+				&:hover {
+					border-bottom: 1px solid white !important;
+				}
+			}
+			border-radius: 5px;
+			box-shadow: 0 0 5px rgba(0,0,0,.6);
+		}
+
+		.arrow {
+			width: 0;
+			border-top: 3px solid #444;
+			border-right: 3px solid transparent;
+			border-left: 3px solid transparent;
+			border-bottom: 3px solid transparent;
+			position: relative;
+			left: 0; right: 0;
+			margin: auto;
+			top: 0;
+		}
+	}
+
+}
