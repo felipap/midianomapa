@@ -1,13 +1,16 @@
 /*
 # pages.coffee
-# for vempraruavem.org, by @f03lipe2
+# for vempraruavem.org
+# Copyright 2014, by @f03lipe
 */
 
-var Event, Events, Ninja, Ninjas, Pages, request, stats, translt, _;
+var Event, Events, Ninja, Ninjas, Pages, async, request, stats, translt, _;
 
 _ = require('underscore');
 
 request = require('request');
+
+async = require('async');
 
 Event = require('./models/event.js');
 
@@ -190,47 +193,35 @@ Events = {
     });
   },
   search_get: function(req, res) {
-    var access_token, added, count, tag, tags, _i, _len, _results;
+    var access_token, tags;
     access_token = req.query.access_token || '';
-    tags = ['passeata'];
-    added = [];
-    count = tags.length;
+    tags = ['passeata', 'protesto', 'manifestação', 'ato+apoio', 'ato+contra', 'ato+em', 'mobilização+contra'];
     res.connection.setTimeout(0);
-    _results = [];
-    for (_i = 0, _len = tags.length; _i < _len; _i++) {
-      tag = tags[_i];
-      _results.push((function(tag) {
-        return Event.crawlAndAdd(tag, access_token, function(err, docs) {
-          if (err) {
-            added.push({
-              tag: tag,
-              error: err
-            });
-            count--;
-            if (err.name === 'cantFetch') {
-              return res.status(400).end('{"message":"You sure that token is still good?"}');
-            } else if (count <= 0) {
-              console.log('ending stream', added.length);
-              return res.end(JSON.stringify(added));
-            }
-          } else {
-            added.push({
-              tag: tag,
-              count: docs.length,
-              results: docs
-            });
-            count--;
-            console.log('count:', count);
-            if (count <= 0) {
-              Event.flushCache();
-              console.log('ending stream', added.length);
-              return res.end(JSON.stringify(added));
-            }
-          }
-        });
-      })(tag));
-    }
-    return _results;
+    return async.map(tags, (function(tag, next) {
+      return Event.crawlAndAdd(tag, access_token, function(err, docs) {
+        if (err && err.name === 'cantFetch') {
+          return next(err);
+        } else if (err) {
+          return next(null, {
+            tag: tag,
+            err: err
+          });
+        } else {
+          return next(null, {
+            tag: tag,
+            count: docs.length,
+            results: docs
+          });
+        }
+      });
+    }), function(err, results) {
+      if (err) {
+        return res.status(400).end('{"message":"You sure that token is still good?"}');
+      } else {
+        Event.flushCache();
+        return res.end(JSON.stringify(results));
+      }
+    });
   }
 };
 

@@ -8,7 +8,7 @@ eventExceptions = {
 		silent: true
 	}
 }
-it then returns a validator function, that takes as input the name of the exceptions to be tested
+and returns a validator function, that takes as input the name of the exceptions to be tested
 for (using the obligatory method .passes(data)), when data is supplied.
 
 if

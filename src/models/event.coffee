@@ -88,7 +88,7 @@ eventExceptions = {
 	}
 	withinTwoMonths: {
 		name: 'dateTooDistant'
-		passes: (data) -> new Date(data.start_time) < new Date(2014,2)
+		passes: (data) -> 1*(new Date(data.start_time)) < 123123123123123123
 		data_attr: 'start_time'
 		silent: true
 	}
@@ -313,7 +313,6 @@ Search for tag on Facebook and add valid events.
 EventSchema.statics.crawlAndAdd = (tag, access_token, callback) ->
 	
 	onGetIds = (body) =>
-
 		if body.data.length is 0
 			return callback(null,[])
 
@@ -322,7 +321,8 @@ EventSchema.statics.crawlAndAdd = (tag, access_token, callback) ->
 				console.log "find event", obj
 				addAlready = (fbObj) =>
 					fbObj.isUserInput = false
-					@findOrCreate {id:obj.id}, fbObj, (err, result, isNew) ->
+					Event.findOrCreate {id:obj.id}, fbObj, (err, result, isNew) ->
+						console.log 'result', arguments
 						next(err, result)
 
 				if obj.venue and obj.venue.latitude
@@ -335,6 +335,7 @@ EventSchema.statics.crawlAndAdd = (tag, access_token, callback) ->
 					gMapsRequester.getValidCoord(obj.location)
 						.done(onGetValidMapsCoord)
 						.fail((err) -> next())
+
 			fbRequester.getEvent(event.id, access_token)
 				.validate(fbEventValidator('validTimezone','notOutdated','withinTwoMonths','bigEnough30','isntSPAM','notBlocked'))
 				.done(onGetValidEvent)
@@ -539,5 +540,4 @@ EventSchema.statics.flushCache = (cb) ->
 		(err, events) ->
 			mc.set('events', JSON.stringify(events), cb)
 
-Event = mongoose.model("Event", EventSchema)
-module.exports = Event
+module.exports = Event = mongoose.model("Event", EventSchema)

@@ -99,7 +99,7 @@ eventExceptions = {
   withinTwoMonths: {
     name: 'dateTooDistant',
     passes: function(data) {
-      return new Date(data.start_time) < new Date(2014, 2);
+      return 1 * (new Date(data.start_time)) < 123123123123123123;
     },
     data_attr: 'start_time',
     silent: true
@@ -407,9 +407,10 @@ EventSchema.statics.crawlAndAdd = function(tag, access_token, callback) {
         console.log("find event", obj);
         addAlready = function(fbObj) {
           fbObj.isUserInput = false;
-          return _this.findOrCreate({
+          return Event.findOrCreate({
             id: obj.id
           }, fbObj, function(err, result, isNew) {
+            console.log('result', arguments);
             return next(err, result);
           });
         };
@@ -719,6 +720,4 @@ EventSchema.statics.flushCache = function(cb) {
   });
 };
 
-Event = mongoose.model("Event", EventSchema);
-
-module.exports = Event;
+module.exports = Event = mongoose.model("Event", EventSchema);

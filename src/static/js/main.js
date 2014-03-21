@@ -281,7 +281,7 @@ require(['jquery', 'backbone', 'underscore', 'handlebars', 'bootstrap'], functio
 				maxWidth: 400,
 				content: this.infowindowTemplate({
 					id: this.model.get('id'),
-					name: this.model.get('name'),
+					name: this.model.get('name').length>100?this.model.get('name').slice(0,100)+'...':this.model.get('name'),
 					date: new Date(this.model.get('start_time')).slashed(),
 					time: new Date(this.model.get('start_time')).colon(),
 					location: this.model.get('location'),
@@ -335,7 +335,7 @@ require(['jquery', 'backbone', 'underscore', 'handlebars', 'bootstrap'], functio
 			var zoom = app.map.getZoom();
 			var factor = Math.pow(2,mm(0,zoom-10,10));
 			var abs = 1128.497*Math.pow(2,20-zoom); /* natural factor for zooming. don't change */
-			var countFact = mm(10,Math.sqrt(count),1000); /* factor related to count */
+			var countFact = mm(10,Math.sqrt(count),200); /* factor related to count */
 			return abs*factor*countFact*0.00005;
 		},
 
@@ -811,7 +811,7 @@ require(['jquery', 'backbone', 'underscore', 'handlebars', 'bootstrap'], functio
 			if ($('body').height()<600)
 				$('#map-wrapper').height($(document.body).height()-40-2); // $('.navbar').outerHeight() = 40
 			else 
-				$('#map-wrapper').height($(document.body).height()-40-2-150); // $('.navbar').outerHeight() = 40
+				$('#map-wrapper').height($(document.body).height()-40-2-40); // $('.navbar').outerHeight() = 40
 		}
 			
 	}

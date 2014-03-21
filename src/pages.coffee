@@ -1,11 +1,13 @@
 
 ###
 # pages.coffee
-# for vempraruavem.org, by @f03lipe2
+# for vempraruavem.org
+# Copyright 2014, by @f03lipe
 ###
 
 _	= require 'underscore'
 request = require 'request'
+async = require 'async'
 
 Event = require './models/event.js'
 Ninja = require './models/ninja.js'
@@ -141,32 +143,24 @@ Events = {
 
 	search_get: (req, res) ->
 		access_token = req.query.access_token or ''
-		tags = ['passeata'] # ,'protesto','manifestação','ato+apoio','ato+contra','ato+em','mobilização+contra']
-
-		added = []
-		count = tags.length
+		tags = ['passeata','protesto','manifestação','ato+apoio','ato+contra','ato+em','mobilização+contra']
+		# tags = ['mobilização+contra']
 
 		res.connection.setTimeout(0)
-		for tag in tags
-			do (tag) -> # create context
-				Event.crawlAndAdd tag, access_token, (err, docs) ->
-					if err
-						added.push({tag: tag, error: err})
-						count--
-						if err.name is 'cantFetch'
-							res.status(400).end('{"message":"You sure that token is still good?"}')
-						else if count <= 0
-							console.log('ending stream', added.length)
-							res.end(JSON.stringify(added))
-					else
-						added.push({tag: tag, count: docs.length, results: docs})
-						count--
-
-						console.log 'count:', count
-						if count <= 0
-							Event.flushCache()
-							console.log('ending stream', added.length)
-							res.end(JSON.stringify(added))
+		async.map tags, ((tag, next) ->
+			Event.crawlAndAdd tag, access_token, (err, docs) ->
+				if err and err.name is 'cantFetch'
+					next(err)
+				else if err
+					next(null, {tag:tag, err:err})
+				else
+					next(null, {tag:tag, count:docs.length, results:docs})
+		), (err, results) ->
+			if err
+				res.status(400).end('{"message":"You sure that token is still good?"}')
+			else
+				Event.flushCache()
+				res.end(JSON.stringify(results))
 }
 
 
