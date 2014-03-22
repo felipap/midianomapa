@@ -42,7 +42,7 @@
 
 			<div class="misc navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<p class="navbar-text hidden-xs hidden-sm hidden-md">Acompanhe a Mídia Independente nas Manifestações pelo Brasil.</p>
+					<p class="navbar-text hidden-xs hidden-sm hidden-md">Acompanhe as Manifestações pelo Brasil.</p>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li>
@@ -79,6 +79,11 @@
 					<li class="icon">
 						<a href="#" data-action="geolocate" data-placement="bottom" data-container="body" title="Centralizar em mim" data-toggle="tooltip" data-trigger="hover">
 							<i class="fa fa-compass"></i>
+						</a>
+					</li>
+					<li class="icon">
+						<a href="#chao" data-placement="bottom" data-container="body" title="Sobre o MidiaNoMapa" data-toggle="tooltip" data-trigger="hover">
+							<i class="fa fa-question"></i>
 						</a>
 					</li>
 				</ul>
@@ -125,7 +130,7 @@
 		</div>
 	
 		<!-- footer -->
-		<footer>
+		<footer id="chao">
 			<div class="container">
 				<div class="row-fluid">
 					<div class="col-md-8 col-sm-12">
@@ -136,7 +141,7 @@
 						<p>Clique no botão de <strong>Registrar Stream</strong> na barra azul no topo do site. Para se registrar você deve ter uma conta no TwitCasting. <a href="https://twitter.com/intent/tweet?text=%40f03lipe%20N%C3%A3o%20quero%20usar%20o%20TwitCasting.%20Prefiro%20usar%20o%20%5Bescreva%20o%20servi%C3%A7o%20aqui%5D.&tw_p=tweetbutton">Não quer usar o TwitCasting?</a></p>
 					</div>
 					<div class="col-md-4 col-sm-12 text-center">
-						<div>Esse projeto é <a href="//github.com/f03lipe/midianomapa"><i class="fa fa-github fa-lg"></i>penSource</a>. <a href="//twitter.com/f03lipe"></a>.</div>
+						<div>Esse projeto é <a href="//github.com/f03lipe/midianomapa"><i class="fa fa-github fa-lg"></i>penSource</a>.</div>
 						<div><strong>midianomapa.org &reg; 2013</strong></div>
 						<div id="social-share">
 							<!-- <div class="g-plus" data-action="share" data-annotation="bubble"></div> -->
@@ -252,11 +257,13 @@
 					<!-- <div><span class="label label-danger">Esse evento não foi revisado ainda.</span></div> -->
 				{{/unless}}
 				
+				{{#if description}}
 				<div class="description">
 					<p>
-						{{#if description}}{{ description }} [...]{{/if}}
+						{{ description }} [...]
 					</p>
 				</div>
+				{{/if}}
 				
 				<div class="full-width-block" style="padding-bottom: 10px">
 					<div class="btn-group">

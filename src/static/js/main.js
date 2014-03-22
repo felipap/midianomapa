@@ -811,7 +811,7 @@ require(['jquery', 'backbone', 'underscore', 'handlebars', 'bootstrap'], functio
 			if ($('body').height()<600)
 				$('#map-wrapper').height($(document.body).height()-40-2); // $('.navbar').outerHeight() = 40
 			else 
-				$('#map-wrapper').height($(document.body).height()-40-2-40); // $('.navbar').outerHeight() = 40
+				$('#map-wrapper').height($(document.body).height()-40); // $('.navbar').outerHeight() = 40
 		}
 			
 	}
