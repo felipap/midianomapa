@@ -742,12 +742,12 @@ require(['jquery', 'backbone', 'underscore', 'handlebars', 'bootstrap'], functio
 			// Initialize Maps object.
 			this.map = new google.maps.Map(document.getElementById("map"), {
 				center: new google.maps.LatLng(-14.656, -52.09), // The center magic numbers are BR's non-exact center coordinates.
-				zoom: 8,
+				zoom: 5,
 				mapTypeId: google.maps.MapTypeId.ROADMAP,
 				mapTypeControlOptions: { position: google.maps.ControlPosition.TOP_CENTER }
 			});
 
-			this.geoLocate();
+			// this.geoLocate();
 			$("[data-action=geolocate]").click(_.bind(this.geoLocate, this, 9));
 
 			this.date = new DateInfo();
