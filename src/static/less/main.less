@@ -31,7 +31,7 @@ header {
 	margin-bottom: 0;
 	border: none;
 	font-size: 13px;
-	box-shadow: 0 0 5px rgba(0,0,0,.2);
+	box-shadow: 0 0 5px rgba(0,0,0,.5);
 
 	p {
 		.navbar-text();
@@ -113,10 +113,8 @@ header {
 
 			a.active {
 				.inner-shadow(0,0,5px);
-				// background: #2980b9 !important;
 				background: #EEE !important;
 				color: #444;
-				// background: ;
 			}
 
 			.active a {
@@ -130,6 +128,7 @@ header {
 			height: 40px;
 			margin-left: 0;
 			margin-right: 10px;
+			border-bottom: 1px solid #444;
 
 			#date {
 				width: 101px;
@@ -141,17 +140,15 @@ header {
 				.transition(all,.1s,linear);
 				vertical-align: top;
 				font-family: bold Monaco, monospace;
-				color: rgba(0,0,0,.4); // @navbar-inverse-link-disabled-color;
+				color: rgba(255,255,255,.4);
 			}
 
 			#date:not(.date-bound):hover {
-				// text-shadow: 0 1px 3px rgba(0,0,0,.4);
 			}
 			#date.date-bound {
-				// .box-shadow(0,0,5px,.4);
-				color: white;
-				background: @navbar-inverse-bg;
-				.inner-shadow(0,0,10px);
+				color: #444;
+				background: white;
+				box-shadow: inset 0 0 0 1px #444;
 			}
 			#date:active {
 			}
@@ -170,10 +167,6 @@ header {
 					margin-top: -2px;
 					float: left;
 					clear: both;
-
-					// &:hover {
-					// 	background: fadeOut(#EEE,10%);
-					// }
 				}
 
 				.arrow:nth-child(1) {
@@ -224,15 +217,13 @@ footer {
 
 	padding-top: 30px;
 	padding-bottom: 20px;
-	background: @navbar-bg;
-	text-shadow: 0 1px 3px rgba(0,0,0,.4);
+	background: white;
+	.text-shadow(0, 1px, 3px, .2);
 	
-	color: white;
+	border-top: 2px solid #444;
 	font-size: 13px;
-	// .inner-shadow(0,5px,10px,.4);
-	// .box-shadow(0,-3px,5px,rgba(0,0,0,.2));	
-	// border: 1px solid black;
 	position: relative;
+	color: #333;
 	
 	p {
 		text-align: justify;
@@ -247,7 +238,7 @@ footer {
 		text-shadow: 0 0 0 1px white;
 		// color: darken(#428bca,20%);
 		&:hover {
-			color: lighten(#428bca,60%);
+			// color: lighten(#428bca,60%);
 		}
 	}
 }

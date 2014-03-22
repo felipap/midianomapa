@@ -278,16 +278,26 @@ require(['jquery', 'backbone', 'underscore', 'handlebars', 'bootstrap'], functio
 			this.marker.setVisible(false);
 			this.circle.setMap(app.map);
 			
-			var color = this.model.get('isUserInput')?"#2980b9":"#2ecc71";
-			if (this.model.get('count') > 2000)
-				var color = "#e74c3c";
-			else if (this.model.get('count') > 10000)
-				var color = "#c0392b";
+			// var r = Math.log(this.count);
+			// var color = this.model.get('isUserInput')?"#2980b9":"#2ecc71";
+			// if (this.model.get('count') > 2000)
+			// 	var color = "rgba(200,200,200)";
+			// else if (this.model.get('count') > 10000)
+			// 	var color = "rgba(200,200,200)";
+
+			function log10(x) { return Math.log(x)/Math.log(10); }
+
+			var r = log10(this.model.get('count'))/6*255,
+				g = 255-r*1.1,
+				b = 255-r;
+
+			var color = "rgb("+Math.floor(r)+","+Math.floor(g)+","+Math.floor(b)+")";
+			console.log(color)
 
 			this.circle.setOptions({
 				visible: true,
 				fillColor: color,
-				fillOpacity: this.emphasized?1:0.8,
+				fillOpacity: this.emphasized?1:(app.map.getZoom()>10?0.5:0.9),
 				strokeColor: 'black',
 				// strokeOpacity: 0.8,
 				strokeWeight: 1*(this.emphasized?2:1),
