@@ -8,15 +8,20 @@ var passport = require('passport');
 module.exports = function (app) {
 
 	function isMeOr404 (req, res, next) {
-		if (app.get('env') !== 'development' && req.query.m !== process.env.myself)
-			return res.status(404).end("Cannot GET "+req.url);
-		next();
+		if (app.get('env') === 'production') {
+			if (req.query.m && req.query.m === process.env.myself)
+				next();
+			else
+				return res.status(404).end("Cannot GET "+req.url);
+		} else {
+			next();
+		}
 	}
 
 	function isMeOrRedirect (req, res, next) {
 		if (app.get('env') === 'production') {
 			if (req.query.m && req.query.m === process.env.myself) {
-				next();
+				return next();
 			}
 		}
 		return res.redirect('/');
@@ -60,8 +65,8 @@ module.exports = function (app) {
 	app.put('/api/events', pages.Events.put);
 	app.get('/api/events/block/:id', isMeOr404, pages.Events.block);
 	app.get('/api/events/review/:id', isMeOr404, pages.Events.review);
-	app.get('/api/events/search', isMeOrRedirect, pages.Events.search_get);
-	app.get('/api/events/reset', isMeOrRedirect, pages.Events.reset);
+	app.get('/api/events/search', isMeOr404, pages.Events.search_get);
+	app.get('/api/events/reset', isMeOr404, pages.Events.reset);
 
 	app.get('/auth/facebook', passport.authenticate('facebook'));
 	app.get('/auth/facebook/callback', passport.authenticate('facebook',{successRedirect: '/panel', failureRedirect: '/login', failureFlash: true}));
