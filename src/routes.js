@@ -19,7 +19,7 @@ module.exports = function (app) {
 				return res.status(403).end("Cannot GET "+req.url);
 			}
 		} else {
-			console.log('5')
+			console.log('5', app.get("env"))
 			return next();
 		}
 	}
