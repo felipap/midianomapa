@@ -8,11 +8,12 @@ var passport = require('passport');
 module.exports = function (app) {
 
 	function isMeOr403 (req, res, next) {
-		if (app.get('env') === 'production') {
-			if (req.query.m && process.env.myself && req.query.m === process.env.myself)
+		if (app.get('env') !== 'development') {
+			if (req.query.m && process.env.myself && req.query.m === process.env.myself) {
 				return next();
-			else
+			} else {
 				return res.status(403).end("Cannot GET "+req.url);
+			}
 		} else {
 			return next();
 		}
