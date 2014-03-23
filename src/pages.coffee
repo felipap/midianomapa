@@ -36,6 +36,7 @@ Ninjas = {
 		req.user.lat = null
 		req.user.lng = null
 		req.user.isLive = false
+		req.user.save ->
 		Ninja.flushCache()
 		req.logout()
 		res.redirect('/')
@@ -140,6 +141,11 @@ Events = {
 	review: (req, res) ->
 		Event.update {id: req.params.id}, {reviewed:true}, (err, nAffected) ->
 			res.end("Updated {id:#{req.params.id}}? Num affected: #{nAffected}. Err: #{err}.")
+
+	reset: (req, res) ->
+		Event.remove {}, (err, num) ->
+			Event.flushCache()
+			res.end(JSON.stringify({err:err, count:num}))
 
 	search_get: (req, res) ->
 		access_token = req.query.access_token or ''

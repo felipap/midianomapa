@@ -58,6 +58,7 @@ module.exports = function (app) {
 	app.get('/api/events/block/:id', isMeOr404, pages.Events.block);
 	app.get('/api/events/review/:id', isMeOr404, pages.Events.review);
 	app.get('/api/events/search', isMeOrRedirect, pages.Events.search_get);
+	app.get('/api/events/reset', isMeOrRedirect, pages.Events.reset);
 
 	app.get('/auth/facebook', passport.authenticate('facebook'));
 	app.get('/auth/facebook/callback', passport.authenticate('facebook',{successRedirect: '/panel', failureRedirect: '/login', failureFlash: true}));

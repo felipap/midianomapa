@@ -99,7 +99,7 @@ eventExceptions = {
   withinTwoMonths: {
     name: 'dateTooDistant',
     passes: function(data) {
-      return 1 * (new Date(data.start_time)) < 123123123123123123;
+      return 1 * (new Date(data.start_time)) < Date.now() + 1000 * 60 * 60 * 24 * 60;
     },
     data_attr: 'start_time',
     silent: true

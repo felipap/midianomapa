@@ -51,6 +51,7 @@ Ninjas = {
     req.user.lat = null;
     req.user.lng = null;
     req.user.isLive = false;
+    req.user.save(function() {});
     Ninja.flushCache();
     req.logout();
     return res.redirect('/');
@@ -190,6 +191,15 @@ Events = {
       reviewed: true
     }, function(err, nAffected) {
       return res.end("Updated {id:" + req.params.id + "}? Num affected: " + nAffected + ". Err: " + err + ".");
+    });
+  },
+  reset: function(req, res) {
+    return Event.remove({}, function(err, num) {
+      Event.flushCache();
+      return res.end(JSON.stringify({
+        err: err,
+        count: num
+      }));
     });
   },
   search_get: function(req, res) {
