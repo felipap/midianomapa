@@ -14,7 +14,7 @@ module.exports = function (app) {
 	}
 
 	function isMeOrRedirect (req, res, next) {
-		if (app.get('env') !== 'development' && req.query.m !== process.env.myself)
+		if (app.get('env') === 'production' && req.query.m !== process.env.myself)
 			return res.redirect('/');
 		next();
 	}
