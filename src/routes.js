@@ -7,24 +7,15 @@ var passport = require('passport');
 
 module.exports = function (app) {
 
-	function isMeOr404 (req, res, next) {
+	function isMeOr403 (req, res, next) {
 		if (app.get('env') === 'production') {
-			if (req.query.m && req.query.m === process.env.myself)
-				next();
-			else
-				return res.status(404).end("Cannot GET "+req.url);
-		} else {
-			next();
-		}
-	}
-
-	function isMeOrRedirect (req, res, next) {
-		if (app.get('env') === 'production') {
-			if (req.query.m && req.query.m === process.env.myself) {
+			if (req.query.m && process.env.myself && req.query.m === process.env.myself)
 				return next();
-			}
+			else
+				return res.status(403).end("Cannot GET "+req.url);
+		} else {
+			return next();
 		}
-		return res.redirect('/');
 	}
 
 	function validateWithRegex(regex) {
@@ -63,10 +54,10 @@ module.exports = function (app) {
 
 	app.get('/api/events', pages.Events.get);
 	app.put('/api/events', pages.Events.put);
-	app.get('/api/events/block/:id', isMeOr404, pages.Events.block);
-	app.get('/api/events/review/:id', isMeOr404, pages.Events.review);
-	app.get('/api/events/search', isMeOr404, pages.Events.search_get);
-	app.get('/api/events/reset', isMeOr404, pages.Events.reset);
+	app.get('/api/events/block/:id', isMeOr403, pages.Events.block);
+	app.get('/api/events/review/:id', isMeOr403, pages.Events.review);
+	app.get('/api/events/search', isMeOr403, pages.Events.search_get);
+	app.get('/api/events/reset', isMeOr403, pages.Events.reset);
 
 	app.get('/auth/facebook', passport.authenticate('facebook'));
 	app.get('/auth/facebook/callback', passport.authenticate('facebook',{successRedirect: '/panel', failureRedirect: '/login', failureFlash: true}));

@@ -404,13 +404,11 @@ EventSchema.statics.crawlAndAdd = function(tag, access_token, callback) {
         _this = this;
       onGetValidEvent = function(obj) {
         var addAlready, onGetValidMapsCoord;
-        console.log("find event", obj);
         addAlready = function(fbObj) {
           fbObj.isUserInput = false;
           return Event.findOrCreate({
             id: obj.id
           }, fbObj, function(err, result, isNew) {
-            console.log('result', arguments);
             return next(err, result);
           });
         };

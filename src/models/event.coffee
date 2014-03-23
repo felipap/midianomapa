@@ -318,11 +318,9 @@ EventSchema.statics.crawlAndAdd = (tag, access_token, callback) ->
 
 		async.map body.data, ((event, next) ->
 			onGetValidEvent = (obj) =>
-				console.log "find event", obj
 				addAlready = (fbObj) =>
 					fbObj.isUserInput = false
 					Event.findOrCreate {id:obj.id}, fbObj, (err, result, isNew) ->
-						console.log 'result', arguments
 						next(err, result)
 
 				if obj.venue and obj.venue.latitude
