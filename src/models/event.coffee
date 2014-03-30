@@ -165,7 +165,7 @@ EventSchema.virtual('facebookUrl').get ->
 
 
 EventSchema.virtual('url').get ->
-	return 'http://vempraruavem.org/#events/'+@id
+	return 'http://midianomapa.org/#events/'+@id
 
 ####################################################################################################
 ####################################################################################################
