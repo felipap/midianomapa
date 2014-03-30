@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "mongoose": "~3.6.5",
-    "express": "^3.3.8",
+    "express": "~3.3.8",
     "ejs": "0.8.3",
     "jade": "0.28.2",
     "underscore": "1.4.4",
