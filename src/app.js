@@ -45,7 +45,8 @@ app.use(express.session({
 	store: 	new (require('connect-mongo')(express))({ mongoose_connection: mongoose.connection })
 }));
 app.use(express.csrf());
-app.use(function(req, res, next){ res.locals.token = req.session._csrf; next(); });
+app.use(function(req, res, 
+	next){ res.locals.token = req.session._csrf; next(); });
 app.use(flash());
 
 app.use(passport.initialize());

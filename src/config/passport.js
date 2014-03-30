@@ -1,6 +1,6 @@
 
 // config/passport.js
-// for meavisa.org, @f03lipe
+// for vempraruavem.org, @f03lipe
 
 var passport = require('passport');
 
