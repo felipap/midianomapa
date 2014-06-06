@@ -383,7 +383,7 @@ require(['jquery', 'backbone', 'underscore', 'handlebars', 'bootstrap'], functio
 				b = 255-r;
 
 			var color = "rgb("+Math.floor(r)+","+Math.floor(g)+","+Math.floor(b)+")";
-			console.log(color)
+			// console.log(color)
 
 			this.circle.setOptions({
 				visible: true,
