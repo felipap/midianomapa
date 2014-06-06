@@ -25,9 +25,9 @@ app.set('views', __dirname + '/views'); // set views for error and 404 pages
 app.set('view options', {layout: false}); // disable layout
 app.set('view cache', true);
 app.engine('html', require('ejs-locals'))
-app.use(helmet.csp())
-app.use(helmet.xframe('deny'))
-app.use(helmet.contentTypeOptions())
+// app.use(helmet.csp())
+// app.use(helmet.xframe('deny'))
+// app.use(helmet.contentTypeOptions())
 app.use(helmet.defaults())
 
 app.use(connect.compress());
