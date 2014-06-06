@@ -13,6 +13,7 @@ mongoose.connect(process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb
 var flash = require('connect-flash');
 var passport = require('passport');
 var connect = require('connect');
+var helmet = require('helmet');
 
 var express = require('express'),
 	app = module.exports = express();
@@ -24,6 +25,10 @@ app.set('views', __dirname + '/views'); // set views for error and 404 pages
 app.set('view options', {layout: false}); // disable layout
 app.set('view cache', true);
 app.engine('html', require('ejs-locals'))
+app.use(helmet.csp())
+app.use(helmet.xframe('deny'))
+app.use(helmet.contentTypeOptions())
+app.use(helmet.defaults())
 
 app.use(connect.compress());
 
