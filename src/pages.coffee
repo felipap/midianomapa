@@ -92,8 +92,7 @@ translt = {
 			title = "Não conseguimos localizar \'#{err._attr}\' evento no mapa."
 		else
 			title = 'Não conseguimos localizar esse evento no mapa.'
-		"""Não encontramos esse evento no mapa. :(
-			<i class="fa fa-question-circle" onMouseOver="$(this).tooltip(\'show\')" data-html="true" title="#{title}"></i>"""
+		title+""":(<i class="fa fa-question-circle" onMouseOver="$(this).tooltip(\'show\')" data-html="true" title="#{title}"></i>"""
 	'dateTooDistant':'Ainda falta muito tempo para esse evento...',
 }
 

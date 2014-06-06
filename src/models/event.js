@@ -213,7 +213,7 @@ EventSchema.virtual('facebookUrl').get(function() {
 });
 
 EventSchema.virtual('url').get(function() {
-  return 'http://vempraruavem.org/#events/' + this.id;
+  return 'http://midianomapa.org/#events/' + this.id;
 });
 
 toFbObject = function(data) {

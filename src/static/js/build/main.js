@@ -1,7 +1,6 @@
 
 /* main.js
-* for vempraruavem.org, by @f03lipe
-* Uses require.js, jquery, Backbone, underscore and twitter-bootstrap.
+* for midianomapa.org, by @f03lipe
 */
 
 function mm(min, num, max) {

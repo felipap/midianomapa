@@ -124,7 +124,7 @@ translt = {
     } else {
       title = 'Não conseguimos localizar esse evento no mapa.';
     }
-    return "Não encontramos esse evento no mapa. :(\n<i class=\"fa fa-question-circle\" onMouseOver=\"$(this).tooltip(\'show\')\" data-html=\"true\" title=\"" + title + "\"></i>";
+    return title + (":(<i class=\"fa fa-question-circle\" onMouseOver=\"$(this).tooltip(\'show\')\" data-html=\"true\" title=\"" + title + "\"></i>");
   },
   'dateTooDistant': 'Ainda falta muito tempo para esse evento...'
 };
