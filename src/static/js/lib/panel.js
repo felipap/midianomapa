@@ -237,8 +237,8 @@ var userPosition = new (function () {
 
 	this.isNull = function () { return !data.lat || !data.lng; }
 
-	this.setFromEvent = function (e) { 
-		return this.set({lat:e.latLng.pb,lng:e.latLng.qb});
+	this.setFromEvent = function (e) {
+		return this.set({lat:e.latLng.k,lng:e.latLng.D});
 	}
 
 	this.getAsLatLngObj = function () { return new google.maps.LatLng(data.lat, data.lng); }
@@ -259,7 +259,7 @@ var userPosition = new (function () {
 			this.trigger('change');
 			return this;
 		} else {
-			console.warn("Invalid argument to .set(): "+JSON.stringify(arguments))
+			throw "Invalid argument to .set(): "+JSON.stringify(arguments)
 		}
 	}
 
