@@ -259,7 +259,7 @@ var userPosition = new (function () {
 			this.trigger('change');
 			return this;
 		} else {
-			throw "Invalid argument to .set(): "+JSON.stringify(arguments)
+			console.warn("Invalid argument to .set(): "+JSON.stringify(arguments))
 		}
 	}
 
