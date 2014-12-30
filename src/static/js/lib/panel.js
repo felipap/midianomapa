@@ -12,7 +12,7 @@ $.fn.share = function (options) {
 		trigger: 'hover',
 		duration: 'fast',
 		text: undefined,
-		url: 'http://vempraruavem.org'u,
+		url: 'http://vempraruavem.org',
 	};
 	// Get options from default < element datset < arguments.
 	var options = _.extend(_.extend(defOptions, this.data()), options);
