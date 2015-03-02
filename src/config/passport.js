@@ -4,8 +4,8 @@
 
 var passport = require('passport');
 
-var Ninja = require('../models/ninja.js');
-var pages = require('../pages.js');
+var Ninja = require('../models/ninja');
+var pages = require('../pages');
 
 var getErrorMessage = function (type) {
 	return {
@@ -30,7 +30,7 @@ function setUpPassport(app) {
 			});
 		}
 	));
-	
+
 	passport.use(new (require('passport-twitter').Strategy)({
 			consumerKey: process.env.twitter_consumer_key,
 			consumerSecret: process.env.twitter_consumer_secret,

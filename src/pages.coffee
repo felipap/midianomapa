@@ -9,8 +9,8 @@ _	= require 'underscore'
 request = require 'request'
 async = require 'async'
 
-Event = require './models/event.js'
-Ninja = require './models/ninja.js'
+Event = require './models/event'
+Ninja = require './models/ninja'
 
 stats = {}
 
@@ -44,7 +44,7 @@ Ninjas = {
 	get: (req, res) ->
 		if req.query.all?
 			Ninja.find {}, (err, ninjas) ->
-				res.end(JSON.stringify(ninjas)) 
+				res.end(JSON.stringify(ninjas))
 		else
 			Ninja.getCached (err, ninjas) ->
 				if err
@@ -136,7 +136,7 @@ Events = {
 				else
 					res.end("Block {id:#{req.params.id}}? Not found.")
 		else res.end()
-				
+
 	review: (req, res) ->
 		Event.update {id: req.params.id}, {reviewed:true}, (err, nAffected) ->
 			res.end("Updated {id:#{req.params.id}}? Num affected: #{nAffected}. Err: #{err}.")

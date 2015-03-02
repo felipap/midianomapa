@@ -2,28 +2,10 @@
 module.exports = function(grunt) {
 	'use strict';
 
-	// 1. All configuration goes here 
+	// 1. All configuration goes here
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
-		// Media files
-		concat: {
-			build: {
-				src: [
-					'src/static/js/lib/plugins.js',
-					'src/static/js/lib/main.js',
-				],
-				dest: 'src/static/js/main.js',
-			}
-		},
- 
-		uglify: {
-			build: {
-				src: 'src/static/js/main.js',
-				dest: 'src/static/js/main.min.js'
-			}
-		},
-		
 		less: {
 			build: {
 				files: {
@@ -33,18 +15,41 @@ module.exports = function(grunt) {
 				options: { cleancss: true },
 			},
 		},
-		
-		coffee: {
-			options: {
-				bare: true,
+
+		browserify: {
+			// prod: {
+			// 	files: {
+			// 		"app/static/js/app.min.js": "app/static/js/app.js",
+			// 	},
+			// 	options: {
+			// 		preBundleCB: function (b) {
+			// 			b.plugin('minifyify', {
+			// 				compressPath: function (p) {
+			// 					return require('path').relative(__dirname, p);
+			// 				},
+			// 			});
+			// 			return b;
+			// 		},
+			// 		watch: false,
+			// 		browserifyOptions: {
+			// 			debug: true,
+			// 		},
+			// 	},
+			// 	bundleOptions: {
+			// 		debug: true,
+			// 	},
+			// },
+			dev: {
+				files: {
+					"src/static/js/main.min.js": "src/static/js/main.js",
+				},
 			},
-			glob_to_multiple: {
-				expand: true,
-				src: ['src/**/*.coffee','tasks/**/*.coffee'],
-				ext: '.js'
+			options: {
+				transform: [ ],
+				watch: true,
+				keepAlive: true,
 			}
 		},
-
 		// Higher-lever configuration
 		watch: {
 			options: {
@@ -52,30 +57,20 @@ module.exports = function(grunt) {
 				atBegin: true
 			},
 			// Beware of the infinite loop
-			scripts: {
-				files: ['src/static/js/lib/*.js'],
-				tasks: ['dist-static-js'],
-				options: { spawn: false },
-			},
 			css: {
 				files: ['src/static/**/*.less'],
 				tasks: ['less'],
 				options: { spawn: false },
 			},
-			coffee: {
-				files: ['**/*.coffee'],
-				tasks: ['dist-coffee'],
-				options: { spawn: false },
-			},
 		},
 
 		nodemon: {
-			dev: {
+			server: {
 				options: {
-					file: 'src/app.js',
+					file: 'src/server.js',
 					args: ['dev'],
 					nodeArgs: ['--debug'],
-					ignoredFiles: ['node_modules/**','src/static/**'],
+					ignoredFiles: ['node_modules/**','src/static/**', 'src/views/**'],
 					// watchedExtensions: ['js','css'],
 					watchedFolders: ['src'],
 					delayTime: 1,
@@ -90,23 +85,25 @@ module.exports = function(grunt) {
 				options: {
 					logConcurrentOutput: true
 				}
+			},
+			watch: {
+				tasks: ['browserify:dev', 'watch'],
+				options: {
+					logConcurrentOutput: true
+				}
 			}
 		},
 	});
 
 	// 3. Where we tell Grunt we plan to use this plug-in.
-	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-less');
-	grunt.loadNpmTasks('grunt-contrib-coffee');
+	grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-concurrent');
 	grunt.loadNpmTasks('grunt-nodemon');
 
-	grunt.registerTask('dist-coffee', ['coffee']);
-	grunt.registerTask('dist-static-js', ['concat', 'uglify']);
-
 	// 4. Where we tell Grunt what to do when we type "grunt" into the terminal.
 	grunt.registerTask('default', ['watch']);
-	grunt.registerTask('serve', ['nodemon']);
+	grunt.registerTask('serve', ['nodemon:server']);
 };

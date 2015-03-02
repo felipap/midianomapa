@@ -7,7 +7,7 @@
 		<title>MídiaNoMapa.org</title>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="csrf-token" content="<%= token %>">
+		<meta name="csrf-token" content="{{ token }}">
 		<meta name="description" content="Acompanhe ao vivo às manifestações no Brasil, com links da mídia indepente.">
 		<meta name="keywords" content="Mídia No Mapa, Copa 2016, Olimpíadas, Protesto, Brasil, Mídia Independente, Ninja, Facebook, evento, events, 2013, June Protests, Brasil">
 		<meta name="viewport" content="width=device-width">
@@ -26,69 +26,7 @@
 		<script	src="http://maps.googleapis.com/maps/api/js?key=AIzaSyByxi20qUAiWpTmUn9z2qi_iCGVyS_q-zE&sensor=true"></script>
 	</head>
 	<body>
-		<!-- navbar -->
-		<header>
-			<div class="brand-wrapper">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span> <i class="fa fa-bars fa-lg"></i>
-				</button>
-				<a style="margin-bottom: 0" class="btn btn-default navbar-btn visible-xs navbar-toggle" href="/ninja">Marcar Transmissão</a>
-				<a class="navbar-brand logo-font" href="../" style="display: inline-block; overflow: hidden; height: 39px">
-					<!-- <i class="fa fa-bullhorn fa-lg"></i> -->
-					<i style="color: #2ECC71; font-size: 25px; margin-right: -5px; text-shadow: 0 0 2px rgba(0,0,0,.4)" class="fa fa-lg fa-map-marker"></i>
-					<span style="vertical-align: top" class="title">&nbsp; MídiaNoMapa.org</span>
-				</a>
-			</div>
-
-			<div class="misc navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-					<p class="navbar-text hidden-xs hidden-sm hidden-md">Acompanhe as Manifestações pelo Brasil.</p>
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li>
-						<a class="" href="/ninja" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Colocar a sua cobertura no mapa">
-							Adicionar Cobertura
-						</a>
-					</li>
-					<li>
-						<a href="#" id="nav-add-event" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Adicionar um evento ao mapa">	
-							Adicionar Evento
-						</a>
-					</li>
-					<li>
-						<a href="#" id="nav-event-list" data-placement="bottom" data-container="body" title="Listar eventos visiveis na tela." data-toggle="tooltip" data-trigger="hover">
-							Listar Eventos
-						</a>
-					</li>
-					<li id="date-wrapper" class="in-lower-bound">
-						<button id="date" class="btn btn-default" data-trigger='hover' data-toggle='tooltip' data-placement='bottom' data-html='true' data-container='body' title="Clique aqui para ver apenas os eventos desde dia.">
-							<% var today = new Date(new Date().setHours(0,0,0,0)); %>
-							<span data-piece="day"><%= (today.getDate()<10?'0':'')+today.getDate() %></span>/<span data-piece="month"><%= (today.getMonth()<9?'0':'')+(today.getMonth()+1) %></span>/<span data-piece="year"><%= today.getFullYear() %></span>
-						</button>
-						<div class="arrows">
-							<button class="arrow" data-action="up"><i class="fa fa-caret-up"></i></button>
-							<button class="arrow" data-action="down"><i class="fa fa-caret-down"></i></button>
-						</div>
-					</li>
-
-					<li class="icon">
-						<a id="calendar-icon" data-placement="bottom" data-container="body" href="#" title="Abrir calendário" data-toggle="tooltip" data-trigger="hover">
-							<i class="fa fa-calendar"></i>
-						</a>
-					</li>
-					<li class="icon">
-						<a href="#" data-action="geolocate" data-placement="bottom" data-container="body" title="Centralizar em mim" data-toggle="tooltip" data-trigger="hover">
-							<i class="fa fa-compass"></i>
-						</a>
-					</li>
-					<li class="icon">
-						<a href="#chao" data-placement="bottom" data-container="body" title="Sobre o site" data-toggle="tooltip" data-trigger="hover">
-							<i class="fa fa-question"></i>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</header>
+		{% include "lib/navbar.html" %}
 
 		<!-- add-event wrapper -->
 		<div id="add-event">
@@ -101,7 +39,7 @@
 				<button title="Sair daqui" data-action="exit"><i class="fa fa-times fa-lg"></i></button>
 			</div>
 		</div>
-	
+
 		<!-- map and boxs inside it -->
 		<div id="map-wrapper">
 
@@ -111,7 +49,7 @@
 			<div id="map">
 			</div>
 		</div>
-		
+
 		<!-- calendar -->
 		<div id="calendar">
 			<div id="table">
@@ -128,71 +66,43 @@
 			<div class="blackout">
 			</div>
 		</div>
-	
-		<!-- footer -->
-		<footer id="chao">
-			<div class="container">
-				<div class="row-fluid">
-					<div class="col-md-8 col-sm-12">
-						<h4><strong>Pra que serve isso aqui?</strong></h4>
+
+		<div class="modal fade" id="about">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">Pra que serve isso aqui?</h4>
+		      </div>
+		      <div class="modal-body">
 						<p>O midianomapa.org te mostra onde e quando vão acontecer as próximas manifestações populares pelo Brasil. O programa procura por eventos públicos e os identifica no mapa no <strong>Facebook</strong>. Além disso, <strong>você também pode colocar o seu evento aqui.</strong> Se você cobre as manifestações, pode até colocar o seu stream no mapa!</p>
 
 						<h4><strong>Quer colocar a sua cobertura no mapa?</strong></h4>
 						<p>Clique no botão de <strong>Adicionar Cobertura</strong> no topo do site. Para isso você deve ter uma conta no TwitCasting.
-					</div>
-					<div class="col-md-4 col-sm-12 text-center">
-						<div><strong>midianomapa.org &reg; 2013</strong></div>
-						<div>Esse projeto é <a href="//github.com/f03lipe/midianomapa">open source</a>.</div>
-					</div>
-					<div class="col-md-4 col-sm-12 text-center">
-						<div>
-							<small>status: <%= stats.events %> eventos <% if (stats.ninjas) { %>e <%=stats.ninjas%> ninja<%= stats.ninjas>1?'s':'' %> <% } %> distribuídos pelo Brasil.</small>
+						<div class="col-md-4 col-sm-12 text-center">
+							<div><strong>midianomapa.org &reg; 2013-2015</strong></div>
+							<div>Esse projeto é <a href="//github.com/f03lipe/midianomapa">open source</a>.</div>
 						</div>
-					</div>
-					<div class="col-md-4 col-sm-12 text-center">					
-						<div id="social-share">
-							<!-- <div class="g-plus" data-action="share" data-annotation="bubble"></div> -->
-							<div class="fb-like" data-href="http://www.midianomapa.org" data-width="150" data-height="25" data-colorscheme="light" data-layout="button_count" data-action="recommend" data-show-faces="true" data-send="false"></div>
-							<a href="https://twitter.com/share" class="twitter-share-button" data-text="Esse site mostra os protestos acontecendo no Brasil usando Facebook! Olha só: midianomapa.org" data-hashtags="midianomapa">Tweet</a>
+						<div class="col-md-4 col-sm-12 text-center">
+							<div>
+								<small>status: {{ stats.events }} eventos {% if (stats.ninjas) %}e {{ stats.ninjas }} ninja{{ stats.ninjas>1?'s':'' }} {% endif %} distribuídos pelo Brasil.</small>
+							</div>
 						</div>
+						<div class="col-md-4 col-sm-12 text-center">
+							<div id="social-share">
+								<!-- <div class="g-plus" data-action="share" data-annotation="bubble"></div> -->
+								<div class="fb-like" data-href="http://www.midianomapa.org" data-width="150" data-height="25" data-colorscheme="light" data-layout="button_count" data-action="recommend" data-show-faces="true" data-send="false"></div>
+								<a href="https://twitter.com/share" class="twitter-share-button" data-text="Esse site mostra os protestos acontecendo no Brasil usando Facebook! Olha só: midianomapa.org" data-hashtags="midianomapa">Tweet</a>
+							</div>
+			      </div>
 					</div>
-				</div>
-			</div>
-		</footer>
-		
-		<script data-main="build/main.min" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.9/require.min.js"></script>
-		<script>
-			requirejs.config({
-				appDir: ".",
-				baseUrl: "static/js",
-				paths: {
-					'jquery':['//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min','vendor/jquery-2.0.3.min'],
-					'bootstrap':['//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/js/bootstrap.min','vendor/bootstrap-3.0.0.min'],
-					'underscore':['//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min','vendor/underscore-1.5.1.min'],
-					'backbone':['//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min','vendor/backbone-1.0.0.min'],
-					'handlebars':['//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min','vendor/handlebars-1.0.0.min']
-				},
-				shim:{'underscore':{exports:'_'},'bootstrap':{deps:['jquery']},'backbone':{exports:'Backbone',deps:['underscore','jquery']},'handlebars':{exports:'Handlebars'},}
-			});
-		</script>
-		
-		<script>
-			require(['jquery','bootstrap'], function ($) {
-				$(function () {
-					$("[data-toggle=popover]").popover();
-					$("[data-toggle=tooltip]").tooltip();
-				});
-				(function setCSRFToken () {
-					$.ajaxPrefilter(function(options, _, xhr) {
-						if (!options.crossDomain) {
-							xhr.setRequestHeader('X-CSRF-Token',
-								$("meta[name='csrf-token']").attr('content'));
-						}
-					});
-				})();
-			});
-		</script>
+		    </div>
+		  </div>
+		</div>
 
+		<script src="/static/js/main.min.js"></script>
+
+		{% raw %}
 		<script type="text/template" id="ninja-infowindow-template">
 			{{#if isLive}}
 				<div class="info-window iw-ninja">
@@ -233,7 +143,7 @@
 						</div>
 						<div class="block">
 							<span data="name">@{{ screen_name }}</span>
-							<span data="live-status" class="label label-danger">Não transmitindo</span>				
+							<span data="live-status" class="label label-danger">Não transmitindo</span>
 						</div>
 					</a>
 				</div>
@@ -245,7 +155,7 @@
 				<div class="title">
 					<h4>{{ name }}</h4>
 				</div>
-				
+
 				<div class="full-width-box">
 					{{#count}}
 						<span class="label label-primary" title="{{sub}}">
@@ -256,11 +166,11 @@
 					<!-- <span class="label label-warning"><i class="fa fa-map-marker"></i> {{location}}</span> -->
 					</i>
 				</div>
-				
+
 				{{#unless reviewed}}
 					<!-- <div><span class="label label-danger">Esse evento não foi revisado ainda.</span></div> -->
 				{{/unless}}
-				
+
 				{{#if description}}
 				<div class="description">
 					<p>
@@ -268,7 +178,7 @@
 					</p>
 				</div>
 				{{/if}}
-				
+
 				<div class="full-width-block" style="padding-bottom: 10px">
 					<div class="btn-group">
 						<a class="btn btn-primary btn-facebook" href='{{ facebookUrl }}'>
@@ -311,7 +221,8 @@
 				{{/count}}
 			</div>
 		</script>
-		
+		{% endraw %}
+
 		<div id="fb-root"></div>
 		<script>(function(d, s, id) {
 		var js, fjs = d.getElementsByTagName(s)[0];

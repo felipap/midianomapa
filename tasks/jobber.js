@@ -6,8 +6,10 @@
 - This is not a library.
 - I swear not to try to make this into a library. */
 
+require('coffee-script/register');
+
 module.exports = function (job, options) {
-	
+
 	var standalone = (module.parent === require.main);
 
 	var requirable = options?((typeof options === 'string')?options:options.requirable):false;
@@ -15,7 +17,7 @@ module.exports = function (job, options) {
 		throw "This module is supposed to be executed as a job.";
 
 	var mongoose = require('mongoose');
-	var start = function () {		
+	var start = function () {
 		// If being executed directly...
 		// > load keys
 		try {
@@ -40,7 +42,7 @@ module.exports = function (job, options) {
 				process.stdout.write('Continue [Y/n]? ')
 				var stdin = process.openStdin();
 				stdin.on('data', function (chunk) {
-					var input = chunk.toString(); 
+					var input = chunk.toString();
 					if (input === '\n' || input === 'y\n' || input.toLowerCase() === 'yes\n') {
 						onContinue();
 					} else { // (input === 'n\n' || input.toLowerCase() === 'no\n') {

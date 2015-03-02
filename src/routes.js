@@ -2,7 +2,7 @@
 // routes.js
 // for vempraruavem.org, by @f03lipe
 
-var pages = require('./pages.js');
+var pages = require('./pages');
 var passport = require('passport');
 
 module.exports = function (app) {
@@ -31,7 +31,7 @@ module.exports = function (app) {
 	function requireLogged (req, res, next) {
 		if (arguments.length === 1) {
 			var url = req;
-			return function (req,res,next) {			
+			return function (req,res,next) {
 				if (!req.user)
 					return res.redirect(url);
 				next();
