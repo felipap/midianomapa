@@ -4,10 +4,6 @@
 
 'use strict';
 
-if (process.env.NODE_ENV === 'production') {
-  require('newrelic');
-}
-
 require('coffee-script/register');
 
 /**
