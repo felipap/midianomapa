@@ -1,7 +1,4 @@
 
-// routes.js
-// for vempraruavem.org, by @f03lipe
-
 var nconf = require('nconf')
 
 var pages = require('./pages');
