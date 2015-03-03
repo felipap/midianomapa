@@ -8838,7 +8838,7 @@ nav.navbar ul.nav > li.icon i {
 nav.navbar .navbar-date {
   height: 50px;
   margin-left: 0;
-  margin-right: 10px;
+  margin-left: 10px;
   border-bottom: 1px solid #444;
 }
 nav.navbar .navbar-date #date {
@@ -8857,6 +8857,7 @@ nav.navbar .navbar-date #date {
   -ms-transition: all 0.1s linear;
   transition: all 0.1s linear;
   vertical-align: top;
+  font-size: 17px;
   font-family: bold Monaco, monospace;
   color: rgba(255, 255, 255, 0.4);
 }
@@ -8868,6 +8869,7 @@ nav.navbar .navbar-date #date.date-bound {
 nav.navbar .navbar-date .arrows {
   display: inline-block;
   width: 15px;
+  height: 50px;
   padding-left: 1px;
 }
 nav.navbar .navbar-date .arrows .arrow {
@@ -8893,13 +8895,13 @@ nav.navbar .navbar-date .arrows .arrow {
   -moz-background-clip: padding-box;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-  font-size: 15px;
+  font-size: 22px;
   margin-top: -2px;
   float: left;
   clear: both;
 }
 nav.navbar .navbar-date .arrows .arrow:nth-child(1) {
-  margin-top: 2px;
+  margin-top: 5px;
 }
 nav.navbar .navbar-date .arrows .arrow:nth-child(2) {
   margin-top: -6px;
@@ -9086,7 +9088,8 @@ body {
   height: 100%;
 }
 #map-wrapper #map .gm-style-iw,
-#map-wrapper #map .gm-style-iw > div {
+#map-wrapper #map .gm-style-iw > div,
+#map-wrapper #map .gm-style-iw > div > div {
   overflow: visible !important;
 }
 #map-wrapper #map .info-window {
@@ -9105,8 +9108,8 @@ body {
   font-size: 11px;
 }
 #map-wrapper #map .info-window .full-width {
-  margin-left: -14px;
-  margin-right: -34px;
+  margin-left: -15px;
+  margin-right: -38px;
 }
 #map-wrapper #map .info-window .title {
   font-size: 13px;
@@ -9115,19 +9118,20 @@ body {
 #map-wrapper #map .info-window .label {
   font-weight: bold;
   margin-right: 5px;
+  border-radius: 0;
 }
 #map-wrapper #map .info-window .full-width-block {
-  margin-left: -14px;
-  margin-right: -34px;
+  margin-left: -15px;
+  margin-right: -38px;
   text-align: center;
 }
 #map-wrapper #map .info-window .description {
-  margin-left: -14px;
-  margin-right: -34px;
+  margin-left: -15px;
+  margin-right: -38px;
   margin-bottom: 0;
   background: #EEE;
   color: black;
-  border: 1px solid #AAA;
+  border: 1px solid #BBB;
 }
 #map-wrapper #map .info-window .description p {
   font-size: 11px;
@@ -9409,7 +9413,7 @@ body .tooltip {
   background: #2fade5;
 }
 .navigation-icons [data-action=add-camera] {
-  background: #3ECC5A;
+  background: #ffb01c;
 }
 .navigation-icons [data-action=list-events] {
   background: #FE3F44;

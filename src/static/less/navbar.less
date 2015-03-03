@@ -49,7 +49,7 @@ nav.navbar {
     height: @navbar-height;
 
     margin-left: 0;
-    margin-right: 10px;
+    margin-left: 10px;
     border-bottom: 1px solid #444;
 
     #date {
@@ -61,6 +61,7 @@ nav.navbar {
       padding: 0;
       .transition(all,.1s,linear);
       vertical-align: top;
+      font-size: 17px;
       font-family: bold Monaco, monospace;
       color: rgba(255,255,255,.4);
     }
@@ -78,6 +79,7 @@ nav.navbar {
     .arrows {
       display: inline-block;
       width: 15px;
+      height: @navbar-height;
       padding-left: 1px;
 
       .arrow {
@@ -85,14 +87,14 @@ nav.navbar {
         color: @color;
         text-align: center;
         .border-radius(10px,10px,10px,10px);
-        font-size: 15px;
+        font-size: 22px;
         margin-top: -2px;
         float: left;
         clear: both;
       }
 
       .arrow:nth-child(1) {
-        margin-top: 2px;
+        margin-top: 5px;
       }
       .arrow:nth-child(2) {
         margin-top: -6px;

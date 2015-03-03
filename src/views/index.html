@@ -66,7 +66,7 @@
       	data-toggle="tooltip" data-container="body" data-placement="left" title="Adicionar evento" data-trigger="manual">
         <i class="icon-add"></i>
       </button>
-      <button onClick="location.href='/ninjas'" data-action="add-camera"
+      <button onClick="location.href='/ninja'" data-action="add-camera"
       	data-toggle="tooltip" data-container="body" data-placement="left" title="Adicionar cobertura ao vivo" data-trigger="manual">
         <i class="icon-voice-chat"></i>
       </button>
@@ -216,7 +216,9 @@
 							<strong>Compartilhar <i class="fa fa-share-square"></i></strong>
 						</button>
 
-						<% if (isMe) { %>
+						{% endraw %}
+						{% if isMe %}
+						{% raw %}
 							<a target='_blank' class="btn btn-danger"
 								href='/api/events/block/{{id}}?m=<%=process.env.myself%>'>
 								<i class="fa fa-trash-o"></i> <strong>Delete</strong>
@@ -227,7 +229,9 @@
 								<i class="fa fa-check-square-o"></i> <strong>Accept</strong>
 							</a>
 							{{/unless}}
-						<% } %>
+						{% endraw %}
+						{% endif %}
+						{% raw %}
 					</div>
 				</div>
 			</div>
