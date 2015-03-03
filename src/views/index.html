@@ -66,10 +66,12 @@
 		</div>
 
     <div class="navigation-icons" id="navigation-icons">
+    	{#
       <button id="nav-add-event" data-action="add-event"
       	data-toggle="tooltip" data-container="body" data-placement="left" title="Adicionar evento" data-trigger="manual">
         <i class="icon-add"></i>
       </button>
+      #}
       <button onClick="location.href='/ninja'" data-action="add-camera"
       	data-toggle="tooltip" data-container="body" data-placement="left" title="Adicionar cobertura ao vivo" data-trigger="manual">
         <i class="icon-voice-chat"></i>
@@ -93,7 +95,7 @@
 		<!-- add-event wrapper -->
 		<div id="add-event">
 			<form>
-				<label class="control-label">Quer adicionar um evento ao mapa?</label>
+				<label class="control-label">Quer adicionar um evento ao nosso mapa?</label>
 				<div class="bar">
 					<input type="text" placeholder="Copie e cole o endereço web do evento do Facebook aqui." />
 					<button onClick=""><i class="fa fa-check"></i></button>

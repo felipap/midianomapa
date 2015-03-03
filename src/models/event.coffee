@@ -178,7 +178,7 @@ toFbObject = (data) ->
 		lat: 			data.venue.latitude
 		lng: 			data.venue.longitude
 		start_time: 	data.start_time
-		description:	data.description?.slice(0,300)
+		description:	data.description?.slice(0,600)
 		count: 			data.count
 	}
 

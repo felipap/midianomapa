@@ -9226,8 +9226,8 @@ body {
 }
 #add-event .blackout [data-action=exit] {
   position: absolute;
-  top: 55px;
-  right: 15px;
+  top: 10px;
+  right: 10px;
   padding: 0;
   margin: 0;
   outline: none;
