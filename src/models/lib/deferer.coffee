@@ -5,7 +5,7 @@ An all-purpose non-documented deferer.
 ###
 
 module.exports = RequestDeferer = ->
-	
+
 	params = undefined			# Keep last parameters passed to @resolve().
 	cb = {done:[], fail:[]}		# List of callbacks.
 	val = -> false				# Default validation function (returns no error).
@@ -40,8 +40,11 @@ module.exports = RequestDeferer = ->
 				else # Return false if no data is available yet (@resolve was called by done/fail).
 					return false
 
+			params = arguments
+
 			# Test for request error or run a more specific test (if available).
 			if err or (err = val(data))
+				console.log('fail', err)
 				t(err) for t in cb['fail'] # Call functions in cb.fail
 			else
 				t(data) for t in cb['done'] # Call functions in cb.done

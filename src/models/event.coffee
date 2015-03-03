@@ -44,7 +44,7 @@ findOrCreate = require('./lib/findOrCreate')
 RequestDeferer = require('./lib/deferer')
 createValidator = require('./lib/validator')
 
-log = _.bind(console.log, console)
+logger = global.logger.mchild()
 
 ### Configure program ###
 SEARCH_N_ADD_MINCOUNT = 20
@@ -59,8 +59,8 @@ VALID_TMZs = [
 MIN_COUNT = 10
 
 
-####################################################################################################
-####################################################################################################
+################################################################################
+################################################################################
 
 eventExceptions = {
 	fetchable: {									# Generic error from Facebook.
@@ -127,8 +127,8 @@ eventExceptions = {
 fbEventValidator = createValidator(eventExceptions)
 
 
-####################################################################################################
-####################################################################################################
+################################################################################
+################################################################################
 # Validation for EventSchema
 notNull = (v) ->
 	v isnt null and v isnt undefined
@@ -138,18 +138,18 @@ notOver = (v) -> # Check if event hasn't taken place yet.
 
 # Schema
 EventSchema = new mongoose.Schema({
-		id:					Number
-		name: 				String
+		id:							Number
+		name: 					String
 		location: 			String
-		lat: 				{type: Number, validate: [notNull, 'cannotLocate']}
-		lng: 				{type: Number, validate: [notNull, 'cannotLocate']}
+		lat: 						{type: Number, validate: [notNull, 'cannotLocate']}
+		lng: 						{type: Number, validate: [notNull, 'cannotLocate']}
 		start_time: 		{type: Date, validate: [notOver, 'eventIsOutdated']}
 		end_time: 			Date
 		description:		{type: String, default: ''}
 		timesAdded:			{type: Number, default: 0}
 		reviewed: 			{type: Boolean, default: false}
 		isUserInput: 		{type: Boolean, default: true}
-		count: 				{type: Number, default: 0}
+		count: 					{type: Number, default: 0}
 		urlTemplate: 		{type: String, default: 'http://facebook.com/events/{id}'}
 	}, {
 		id: false
@@ -157,8 +157,8 @@ EventSchema = new mongoose.Schema({
 		toJSON: { virtuals: true }
 	})
 
-####################################################################################################
-####################################################################################################
+################################################################################
+################################################################################
 # Virtuals
 EventSchema.virtual('facebookUrl').get ->
 	return 'http://facebook.com/events/'+@id
@@ -167,8 +167,8 @@ EventSchema.virtual('facebookUrl').get ->
 EventSchema.virtual('url').get ->
 	return 'http://midianomapa.org/#events/'+@id
 
-####################################################################################################
-####################################################################################################
+################################################################################
+################################################################################
 
 toFbObject = (data) ->
 	return {
@@ -183,27 +183,28 @@ toFbObject = (data) ->
 	}
 
 
-####################################################################################################
-####################################################################################################
+################################################################################
+################################################################################
 
 ###
 A wrapper around calls to facebook API.
 ###
 fbRequester = do ->
 
-	doFbRequest = (file, qs, cb, loggable=false) ->
+	doFbRequest = (path, qs, cb, loggable=false) ->
 		return request.get(
-			{url: 'https://graph.facebook.com/'+file, json: true, qs: qs},
+			{url: 'https://graph.facebook.com/'+path, json: true, qs: qs},
 			(err, res, body) ->
 				if loggable
-					log('Path reached', res.request.uri.host+res.request.uri.pathname)
+					logger.info('Path reached', res.request.uri.host+res.request.uri.pathname)
+					if err
+						logger.error('→ error:', err)
 				cb.apply(cb, arguments)
 		)
 
 	return {
 		getEventCount: (id) ->
-			d = new RequestDeferer()
-					.validate(fbEventValidator('fetchable'))
+			d = new RequestDeferer().validate(fbEventValidator('fetchable'))
 			doFbRequest(id+'/attending',
 				{access_token:process.env.facebook_app_access_token,summary:1},
 				((err, res, data) -> d.resolve(err, data))
@@ -219,20 +220,21 @@ fbRequester = do ->
 		###
 
 		getEvent: (id) ->
-			hasError =
-			d = new RequestDeferer()
-					.validate(fbEventValidator('fetchable','isEvent','locatable'))
+			d = new RequestDeferer().validate(fbEventValidator('fetchable','isEvent','locatable'))
 
 			doFbRequest(id,
 				{access_token:process.env.facebook_app_access_token,metadata:1},
 				(err, res, body) ->
 					# Request count of people going to this event.
+					if err
+						db.resolve(err, body)
+						return
 					doFbRequest(id+'/attending',
 						{access_token:process.env.facebook_app_access_token,summary:1},
 						(e, r, countBody)->
 							# Extend original body with count and deferrer.resolve(<arguments>).
-							d.resolve(err or e, _.extend(body, {count: countBody?.summary?.count}))
-					)
+							d.resolve(e, _.extend(body, {count: countBody?.summary?.count}))
+					, true)
 				, true
 			)
 			return d
@@ -267,7 +269,7 @@ gMapsRequester = do ->
 			},
 			(err, res, body) ->
 				if loggable
-					log('Path reached', res.request.uri.host+res.request.uri.pathname)
+					logger.info('Path reached', res.request.uri.host+res.request.uri.pathname)
 				cb.apply(cb, arguments)
 		)
 
@@ -296,13 +298,13 @@ gMapsRequester = do ->
 			return d
 	}
 
-####################################################################################################
-####################################################################################################
+################################################################################
+################################################################################
 
 genericErrorHandler = (callback) ->
 	return (err) ->
 		unless err._silent
-			log('err', err)
+			logger.error('err', err)
 		callback(err)
 
 ###
@@ -318,8 +320,6 @@ EventSchema.statics.crawlAndAdd = (tag, access_token, callback) ->
 	onGetIds = (body) =>
 		if body.data.length is 0
 			return callback(null,[])
-
-		console.log('')
 
 		async.map body.data, ((event, next) ->
 			onGetValidEvent = (obj) =>
@@ -357,7 +357,7 @@ Return a fbObject (not an Event!) given a facebook Id of a valid event (aka: wit
 count, description etc).
 ###
 EventSchema.statics.getValidEventFromFb = (eventId, callback) ->
-	log("Asked to getValidEventFromFb: #{eventId}")
+	logger.info("Asked to getValidEventFromFb: #{eventId}")
 
 	onGetEventInfo = (obj) =>
 		if not obj.venue.latitude
@@ -433,11 +433,11 @@ EventSchema.statics.reFetchAll = (callback) ->
 			doc.reFetch (err) ->
 				if err
 					if err?.name is "cantFetch"
-						log('cantFetch', doc.id, doc.name)
+						logger.info('cantFetch', doc.id, doc.name)
 						doc.remove()
-					else log('error', err)
+					else logger.info('error', err)
 				else
-					log('200', doc.id, doc.name)
+					logger.info('200', doc.id, doc.name)
 					results.push(doc)
 				if !--count
 					callback?(null, results)
@@ -456,7 +456,7 @@ EventSchema.methods.reFetch = (callback) ->
 	onGetEventInfo = (obj) =>
 
 		if obj.count isnt @count
-			log("COUNT_CHANGED #{obj.id}:#{obj.name}. #{@count} → #{obj.count}")
+			logger.info("COUNT_CHANGED #{obj.id}:#{obj.name}. #{@count} → #{obj.count}")
 
 		updateAlready = (obj, location={}) =>
 			# Simply using toFbObject here wouldn't work, because the invalid venue info (of those
@@ -470,17 +470,17 @@ EventSchema.methods.reFetch = (callback) ->
 				})
 			@update data, (err, num) =>
 				if err
-					log("ERROR_WITH_DATA #{obj.id}:#{obj.name} ", data, err)
+					logger.info("ERROR_WITH_DATA #{obj.id}:#{obj.name} ", data, err)
 				callback(err, @)
 
 		# Location HAS changed and so have the coordinates
 		if obj.location isnt @location and obj.venue.latitude isnt @lat
 
-			log("LOCATION_CHANGED #{obj.id}:#{obj.name}")
+			logger.info("LOCATION_CHANGED #{obj.id}:#{obj.name}")
 			# If object location changed, attempt to get new one from Google.
 			gMapsRequester.getValidCoord(obj.location)
 				.done((c) -> updateAlready(obj, {lat:c[0],lng:c[1]}))
-				.fail(-> log("GMAP_ERROR #{obj.id}:#{obj.name}"); return found.dec()) # decide what TODO
+				.fail(-> logger.info("GMAP_ERROR #{obj.id}:#{obj.name}"); return found.dec()) # decide what TODO
 		else
 			updateAlready(obj)
 
@@ -522,8 +522,8 @@ EventSchema.statics.Blocked.find {}, (err, all) ->
 
 EventSchema.statics.findOrCreate = findOrCreate
 
-####################################################################################################
-####################################################################################################
+################################################################################
+################################################################################
 
 EventSchema.statics.getCached = (cb) ->
 	mc = memjs.Client.create()
