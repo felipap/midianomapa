@@ -1,16 +1,15 @@
 
 ###
 # pages.coffee
-# for vempraruavem.org
-# Copyright 2014, by @f03lipe
 ###
 
 _	= require 'underscore'
 request = require 'request'
 async = require 'async'
+mongoose = require 'mongoose'
 
-Event = require './models/event'
-Ninja = require './models/ninja'
+Event = mongoose.model 'Event'
+Ninja = mongoose.model 'Ninja'
 
 stats = {}
 
@@ -148,11 +147,11 @@ Events = {
 
 	search_get: (req, res) ->
 		access_token = req.query.access_token or ''
-		tags = ['passeata','protesto','manifestação','ato+apoio','ato+contra','ato+em','mobilização+contra']
-		# tags = ['mobilização+contra']
+		# tags = ['passeata','protesto','manifestação','ato+apoio','ato+contra','ato+em','mobilização+contra']
+		tags = ['passeata']
 
 		res.connection.setTimeout(0)
-		async.map tags, ((tag, next) ->
+		async.mapSeries tags, ((tag, next) ->
 			Event.crawlAndAdd tag, access_token, (err, docs) ->
 				if err and err.name is 'cantFetch'
 					next(err)

@@ -80,7 +80,7 @@ eventExceptions = {
 		silent: true
 		data_attr: 'location'
 	}
-	notOutdated: { 	
+	notOutdated: {
 		name: 'eventIsOutdated'
 		passes: (data) ->new Date() < new Date(data.start_time)
 		data_attr: 'start_time'
@@ -219,7 +219,7 @@ fbRequester = do ->
 		###
 
 		getEvent: (id) ->
-			hasError = 
+			hasError =
 			d = new RequestDeferer()
 					.validate(fbEventValidator('fetchable','isEvent','locatable'))
 
@@ -285,7 +285,7 @@ gMapsRequester = do ->
 						return d.resolve(_.extend(eventExceptions.locatable, {'_attr':location}))
 					# See if it's in Brazil.
 					for addr in results?[0].address_components by -1
-						if 'country' in addr.types 
+						if 'country' in addr.types
 							if addr.short_name in ['BR']#,'PT']
 							# if true
 								return d.resolve(null,
@@ -311,15 +311,21 @@ Search for tag on Facebook and add valid events.
 @param access_token {String} 	Access token to be used in the request to Facebook.
 ###
 EventSchema.statics.crawlAndAdd = (tag, access_token, callback) ->
-	
+	Event = @
+
+	console.log('tag', tag)
+
 	onGetIds = (body) =>
 		if body.data.length is 0
 			return callback(null,[])
+
+		console.log('')
 
 		async.map body.data, ((event, next) ->
 			onGetValidEvent = (obj) =>
 				addAlready = (fbObj) =>
 					fbObj.isUserInput = false
+					console.log('add already', !!Event.findOrCreate)
 					Event.findOrCreate {id:obj.id}, fbObj, (err, result, isNew) ->
 						next(err, result)
 
@@ -329,7 +335,7 @@ EventSchema.statics.crawlAndAdd = (tag, access_token, callback) ->
 					console.assert(obj.location)
 					onGetValidMapsCoord = (coord) ->
 						[obj.venue.latitude, obj.venue.longitude] = coord
-						addAlready(toFbObject(obj))				
+						addAlready(toFbObject(obj))
 					gMapsRequester.getValidCoord(obj.location)
 						.done(onGetValidMapsCoord)
 						.fail((err) -> next())
@@ -352,7 +358,7 @@ count, description etc).
 ###
 EventSchema.statics.getValidEventFromFb = (eventId, callback) ->
 	log("Asked to getValidEventFromFb: #{eventId}")
-	
+
 	onGetEventInfo = (obj) =>
 		if not obj.venue.latitude
 			if obj.count < 20 # Too small to spend a Gmaps call with it.
@@ -397,7 +403,7 @@ EventSchema.statics.createFromFBId = (eventId, callback) ->
 		onFetchObject = (err, obj) =>
 			console.log('cacete', err)
 			if err then return callback(err)
-			
+
 			# Add/update object and call back.
 			onFoundOrCreated = (err, obj, isNew) =>
 				if err
@@ -407,7 +413,7 @@ EventSchema.statics.createFromFBId = (eventId, callback) ->
 					else
 						return callback(err)
 				callback.apply(this, arguments)
-			
+
 			# Find Event object from fbObject.
 			@findOrCreate({id: obj.id}, _.extend(obj,{reviewed:true}), {upsert:true}, onFoundOrCreated)
 
@@ -464,12 +470,12 @@ EventSchema.methods.reFetch = (callback) ->
 				})
 			@update data, (err, num) =>
 				if err
-					log("ERROR_WITH_DATA #{obj.id}:#{obj.name} ", data, err) 
+					log("ERROR_WITH_DATA #{obj.id}:#{obj.name} ", data, err)
 				callback(err, @)
 
 		# Location HAS changed and so have the coordinates
 		if obj.location isnt @location and obj.venue.latitude isnt @lat
-	
+
 			log("LOCATION_CHANGED #{obj.id}:#{obj.name}")
 			# If object location changed, attempt to get new one from Google.
 			gMapsRequester.getValidCoord(obj.location)
@@ -496,6 +502,8 @@ EventSchema.statics.Blocked = mongoose.model("Blocked", BannedEventsSchema)
 BLOCKED_IDS = []
 
 EventSchema.statics.blockAndRemove = (obj, callback) ->
+	Event = @
+
 	EventSchema.statics.Blocked.findOrCreate {id: obj.id}, (err, doc) ->
 		doc.start_time = obj.start_time
 		doc.save()
@@ -538,4 +546,4 @@ EventSchema.statics.flushCache = (cb) ->
 		(err, events) ->
 			mc.set('events', JSON.stringify(events), cb)
 
-module.exports = Event = mongoose.model("Event", EventSchema)
+module.exports = EventSchema

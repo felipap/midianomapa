@@ -29,11 +29,11 @@ NinjaSchema = new mongoose.Schema({
 		name: String
 		screen_name: String
 		avatar_url: String
-		
+
 		lastSave: Date
 		firstAccess: Date
 		lastAccess: Date
-		
+
 		isLive: Boolean
 		lastMovieId: Number
 		live_viewers_count: {type: Number, default: 0}
@@ -100,8 +100,8 @@ getLiveStatusFromTwitCasting = (id, callback) ->
 
 NinjaSchema.statics.findOrCreateFromInfo = (data, callback) ->
 
-	getUserStatusFromTwitCasting data.username, (err, twcProfile) =>	
-		if err 
+	getUserStatusFromTwitCasting data.username, (err, twcProfile) =>
+		if err
 			return callback({type:'500twitCasting'})
 		if not twcProfile.userid
 			return callback({type:'noTwitCasting'})
@@ -141,7 +141,7 @@ NinjaSchema.statics.findOrCreateFromInfo = (data, callback) ->
 
 
 NinjaSchema.statics.createFromTwitterProfile = (twtProfile, callback) ->
-	
+
 	@findOrCreateFromInfo({
 		username: twtProfile.username
 		social_id: twtProfile._json.id_str
@@ -217,4 +217,4 @@ NinjaSchema.methods.reFetch = (callback) ->
 
 	callback ?= ->
 
-module.exports = mongoose.model("Ninja", NinjaSchema)
+module.exports = NinjaSchema
