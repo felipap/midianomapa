@@ -121,8 +121,6 @@ app.use(passport.session());
 /** END of a SHOULD_NOT_TOUCH_ZONE ------------------------------------------**/
 /**--------------------------------------------------------------------------**/
 
-
-app.use(app.router);
 // app.use('/', express.static(__dirname + '/static')); // serve static files from root (put after router)
 
 app.locals.errors = {};
@@ -130,6 +128,7 @@ app.locals.message = {};
 app.locals.tags = {};
 
 require('./routes.js')(app);
+app.use(app.router);
 
 if (app.get('env') === 'development') {
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));

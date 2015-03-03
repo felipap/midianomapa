@@ -108,6 +108,7 @@ var MapsEventMarkerView = GenericMapsMarkerView.extend({
         date: new Date(this.model.get('start_time')).slashed(),
         time: new Date(this.model.get('start_time')).colon(),
         location: this.model.get('location'),
+        selfid: window.selfid,
         count: {
           num: this.model.get('count'),
           sub: this.model.get('count')>10000?'Tá indo gente pra dédéu!':'',

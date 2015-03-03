@@ -2,20 +2,18 @@
 // routes.js
 // for vempraruavem.org, by @f03lipe
 
+var nconf = require('nconf')
+
 var pages = require('./pages');
 var passport = require('passport');
 
 module.exports = function (app) {
 
 	function isMeOr403 (req, res, next) {
-		if (app.get('env') !== 'development') {
-			if (req.query.m && process.env.myself && req.query.m === process.env.myself) {
-				return next();
-			} else {
-				return res.status(403).end("Cannot GET "+req.url);
-			}
-		} else {
+		if (nconf.get('env') === 'development') {
 			return next();
+		} else {
+			return res.status(403).end("Cannot GET "+req.url);
 		}
 	}
 

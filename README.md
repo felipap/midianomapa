@@ -1,4 +1,6 @@
-# MidiaNoMapa.org
+
+# Midia No Mapa
+
 ### Acompanhe Ninjas e Manifestações pelo Brasil.
 
 <del>Projetinho do feriado.</deç>
@@ -8,7 +10,6 @@
 No diretório principal, crie um arquivo env.js com as seguinte chaves:
 
 ```
-process.env.myself
 process.env.facebook_app_id
 process.env.facebook_secreet
 process.env.facebook_app_access_token
@@ -20,7 +21,7 @@ Elas serão usadas pelo programa na interação com login pelo facebook e twitte
 
 Baixe os pacotes necessários através usando `npm install`
 
-Rode o express usando `grunt start`
+Rode o express usando `grunt serve`
 
 ## TODOs:
 

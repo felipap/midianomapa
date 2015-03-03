@@ -8945,9 +8945,6 @@ body {
   color: white;
   opacity: 0.9;
 }
-[data-action=exit]:hover {
-  opacity: 1;
-}
 .modal-backdrop {
   height: 100%;
   z-index: 1;

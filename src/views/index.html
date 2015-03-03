@@ -28,6 +28,14 @@
 	<body>
 		{% include "lib/navbar.html" %}
 
+
+		{% if isMe %}
+		<script>selfid = {{ isMe }}</script>
+		{% else %}
+		<script>selfid = false</script>
+		{% endif %}
+
+
 		<div class="modal fade" id="about">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
@@ -215,12 +223,12 @@
 					{% if isMe %}
 					{% raw %}
 						<a target='_blank' class="btn btn-danger"
-							href='/api/events/block/{{id}}?m=<%=process.env.myself%>'>
+							href='/api/events/block/{{id}}'>
 							<i class="fa fa-trash-o"></i> <strong>Delete</strong>
 						</a>
 						{{#unless reviewed}}
 						<a target='_blank' class="btn btn-success"
-							href='/api/events/review/{{id}}?m=<%=process.env.myself%>'>
+							href='/api/events/review/{{id}}'>
 							<i class="fa fa-check-square-o"></i> <strong>Accept</strong>
 						</a>
 						{{/unless}}

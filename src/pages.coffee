@@ -7,6 +7,7 @@ _	= require 'underscore'
 request = require 'request'
 async = require 'async'
 mongoose = require 'mongoose'
+nconf = require 'nconf'
 
 Event = mongoose.model 'Event'
 Ninja = mongoose.model 'Ninja'
@@ -20,7 +21,7 @@ Pages = {
 	index_get: (req, res) ->
 		console.log("Sending stats:", stats)
 		res.render('index', {
-			isMe: process.env.myself and (req.query.m is process.env.myself)
+			isMe: nconf.get('env') is 'development'
 			stats: stats
 		})
 }
