@@ -1,0 +1,123 @@
+
+
+nav.navbar {
+  border-radius: 0;
+
+  min-height: inherit;
+  margin-bottom: 0;
+  border: none;
+  font-size: 13px;
+  // box-shadow: 0 0 3px rgba(0,0,0,.8);
+
+  @color: white;
+
+  p {
+    .navbar-text();
+    font-size: 12px;
+    color: inherit;
+  }
+
+  ul.nav {
+    & > li {
+      & > button {
+        .ultra-reset-button;
+        color: white;
+        line-height: 50px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+      & > a,
+      & > button {
+        font-weight: 500;
+        font-size: 13px;
+
+        &:focus {
+          outline: 0;
+          border: 0;
+        }
+      }
+    }
+    & > li.icon {
+      i {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .navbar-date {
+    height: @navbar-height;
+
+    margin-left: 0;
+    margin-right: 10px;
+    border-bottom: 1px solid #444;
+
+    #date {
+      width: 101px;
+      text-decoration: none;
+      text-align: center;
+      .reset-button();
+      border-radius: 0;
+      padding: 0;
+      .transition(all,.1s,linear);
+      vertical-align: top;
+      font-family: bold Monaco, monospace;
+      color: rgba(255,255,255,.4);
+    }
+
+    #date:not(.date-bound):hover {
+    }
+    #date.date-bound {
+      color: #444;
+      background: white;
+      box-shadow: inset 0 0 0 1px #444;
+    }
+    #date:active {
+    }
+
+    .arrows {
+      display: inline-block;
+      width: 15px;
+      padding-left: 1px;
+
+      .arrow {
+        .reset-button();
+        color: @color;
+        text-align: center;
+        .border-radius(10px,10px,10px,10px);
+        font-size: 15px;
+        margin-top: -2px;
+        float: left;
+        clear: both;
+      }
+
+      .arrow:nth-child(1) {
+        margin-top: 2px;
+      }
+      .arrow:nth-child(2) {
+        margin-top: -6px;
+      }
+
+      &:not(.in-lower-bound) .arrow[data-action=down] {
+        // text-shadow: 0 -1px 2px rgba(0,0,0,.9);
+        &:active { top: -3px; text-shadow: none; }
+      }
+
+      &:not(.in-upper-bound) .arrow[data-action=up] {
+        // text-shadow: 0 1px 2px rgba(0,0,0,.9);
+        &:active { top: 3px; text-shadow: none; }
+      }
+
+      [data-piece] {
+        font-weight: bold;
+      }
+    }
+
+    &.in-lower-bound .arrow[data-action=down],
+    &.in-upper-bound .arrow[data-action=up] {
+      text-shadow: none !important;
+      color: #AAA;
+      cursor: default;
+    }
+  }
+}

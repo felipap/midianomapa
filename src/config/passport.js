@@ -1,11 +1,13 @@
 
 // config/passport.js
-// for vempraruavem.org, @f03lipe
+// for midianomapa.org
+// @f03lipe
 
 var passport = require('passport');
 
 var Ninja = require('../models/ninja');
 var pages = require('../pages');
+var nconf = require('nconf')
 
 var getErrorMessage = function (type) {
 	return {
@@ -16,9 +18,9 @@ var getErrorMessage = function (type) {
 
 function setUpPassport(app) {
 	passport.use(new (require('passport-facebook').Strategy)({
-			clientID: process.env.facebook_app_id,
-			clientSecret: process.env.facebook_secret,
-			callbackURL: "/auth/facebook/callback"
+			clientID: nconf.get('facebook_app_id'),
+			clientSecret: nconf.get('facebook_secret'),
+			callbackURL: '/auth/facebook/callback'
 		},
 		function(token, tokenSecret, profile, done) {
 			Ninja.createFromFacebookProfile(profile, function (err, ninja) {
@@ -32,9 +34,9 @@ function setUpPassport(app) {
 	));
 
 	passport.use(new (require('passport-twitter').Strategy)({
-			consumerKey: process.env.twitter_consumer_key,
-			consumerSecret: process.env.twitter_consumer_secret,
-			callbackURL: "/auth/twitter/callback"
+			consumerKey: nconf.get('twitter_consumer_key'),
+			consumerSecret: nconf.get('twitter_consumer_secret'),
+			callbackURL: '/auth/twitter/callback'
 		},
 		function(token, tokenSecret, profile, done) {
 			Ninja.createFromTwitterProfile(profile, function (err, ninja) {

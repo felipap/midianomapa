@@ -28,15 +28,75 @@
 	<body>
 		{% include "lib/navbar.html" %}
 
+		<div class="modal fade" id="about">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">Sobre o site</h4>
+		      </div>
+		      <div class="modal-body">
+						<p>O midianomapa.org te mostra onde e quando vão acontecer as próximas manifestações populares pelo Brasil. O programa procura por eventos públicos e os identifica no mapa no <strong>Facebook</strong>. Além disso, <strong>você também pode colocar o seu evento aqui.</strong> Se você cobre as manifestações, pode até colocar o seu stream no mapa!</p>
+
+						<h4><strong>Quer colocar a sua cobertura no mapa?</strong></h4>
+						<p>Clique no botão de <strong>Adicionar Cobertura</strong> no topo do site. Para isso você deve ter uma conta no TwitCasting.
+						<div>
+							<div><strong>midianomapa.org &reg; 2013-2015</strong></div>
+							<div>Esse projeto é <a href="//github.com/f03lipe/midianomapa">open source</a>.</div>
+						</div>
+						<div>
+							<div>
+								<small>status: {{ stats.events }} eventos {% if (stats.ninjas) %}e {{ stats.ninjas }} ninja{{ stats.ninjas>1?'s':'' }} {% endif %} distribuídos pelo Brasil.</small>
+							</div>
+						</div>
+						<div>
+							<div id="social-share">
+								<!-- <div class="g-plus" data-action="share" data-annotation="bubble"></div> -->
+								<div class="fb-like" data-href="http://www.midianomapa.org" data-width="150" data-height="25" data-colorscheme="light" data-layout="button_count" data-action="recommend" data-show-faces="true" data-send="false"></div>
+								<a href="https://twitter.com/share" class="twitter-share-button" data-text="Esse site mostra os protestos acontecendo no Brasil usando Facebook! Olha só: midianomapa.org" data-hashtags="midianomapa">Tweet</a>
+							</div>
+			      </div>
+					</div>
+		    </div>
+		  </div>
+		</div>
+
+    <div class="navigation-icons" id="navigation-icons">
+      <button id="nav-add-event" data-action="add-event"
+      	data-toggle="tooltip" data-container="body" data-placement="left" title="Adicionar evento" data-trigger="manual">
+        <i class="icon-add"></i>
+      </button>
+      <button onClick="location.href='/ninjas'" data-action="add-camera"
+      	data-toggle="tooltip" data-container="body" data-placement="left" title="Adicionar cobertura ao vivo" data-trigger="manual">
+        <i class="icon-voice-chat"></i>
+      </button>
+      <!--
+      <button id="calendar-icon" data-action="show-calendar"
+      	data-toggle="tooltip" data-container="body" data-placement="left" title="Abrir calendário" data-trigger="manual">
+        <i class="icon-event"></i>
+      </button>
+      <button id="nav-event-list" data-action="list-events"
+      	data-toggle="tooltip" data-container="body" data-placement="left" title="Listar eventos visíveis" data-trigger="manual">
+        <i class="icon-view-day"></i>
+      </button>
+      -->
+      <button class="centralize" data-action="centralize"
+      	data-toggle="tooltip" data-container="body" data-placement="left" title="Centralizar em mim" data-trigger="manual">
+        <i class="icon-my-location"></i>
+      </button>
+    </div>
+
 		<!-- add-event wrapper -->
 		<div id="add-event">
 			<form>
 				<label class="control-label">Quer adicionar um evento ao nosso mapa?</label>
-				<input type="text" placeholder="Copie e cole o endereço web do evento do Facebook aqui.">
-				<button onClick=""><i class="fa fa-check"></i></button>
+				<div class="bar">
+					<input type="text" placeholder="Copie e cole o endereço web do evento do Facebook aqui." />
+					<button onClick=""><i class="fa fa-check"></i></button>
+				</div>
 			</form>
 			<div class="blackout">
-				<button title="Sair daqui" data-action="exit"><i class="fa fa-times fa-lg"></i></button>
+				<button title="Sair daqui" data-action="exit" class="close"><i class="icon-close"></i></button>
 			</div>
 		</div>
 
@@ -52,8 +112,8 @@
 
 		<!-- calendar -->
 		<div id="calendar">
+			<button data-toggle="tooltip" class="close" data-action="exit"><i class="icon-close"></i></button>
 			<div id="table">
-				<button title="Fechar calendário." data-toggle="tooltip" data-action="exit"><i class="fa fa-times fa-lg"></i></button>
 				<div class="month" data-data="month"></div>
 				<table>
 					<thead>
@@ -65,39 +125,6 @@
 
 			<div class="blackout">
 			</div>
-		</div>
-
-		<div class="modal fade" id="about">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title">Pra que serve isso aqui?</h4>
-		      </div>
-		      <div class="modal-body">
-						<p>O midianomapa.org te mostra onde e quando vão acontecer as próximas manifestações populares pelo Brasil. O programa procura por eventos públicos e os identifica no mapa no <strong>Facebook</strong>. Além disso, <strong>você também pode colocar o seu evento aqui.</strong> Se você cobre as manifestações, pode até colocar o seu stream no mapa!</p>
-
-						<h4><strong>Quer colocar a sua cobertura no mapa?</strong></h4>
-						<p>Clique no botão de <strong>Adicionar Cobertura</strong> no topo do site. Para isso você deve ter uma conta no TwitCasting.
-						<div class="col-md-4 col-sm-12 text-center">
-							<div><strong>midianomapa.org &reg; 2013-2015</strong></div>
-							<div>Esse projeto é <a href="//github.com/f03lipe/midianomapa">open source</a>.</div>
-						</div>
-						<div class="col-md-4 col-sm-12 text-center">
-							<div>
-								<small>status: {{ stats.events }} eventos {% if (stats.ninjas) %}e {{ stats.ninjas }} ninja{{ stats.ninjas>1?'s':'' }} {% endif %} distribuídos pelo Brasil.</small>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-12 text-center">
-							<div id="social-share">
-								<!-- <div class="g-plus" data-action="share" data-annotation="bubble"></div> -->
-								<div class="fb-like" data-href="http://www.midianomapa.org" data-width="150" data-height="25" data-colorscheme="light" data-layout="button_count" data-action="recommend" data-show-faces="true" data-send="false"></div>
-								<a href="https://twitter.com/share" class="twitter-share-button" data-text="Esse site mostra os protestos acontecendo no Brasil usando Facebook! Olha só: midianomapa.org" data-hashtags="midianomapa">Tweet</a>
-							</div>
-			      </div>
-					</div>
-		    </div>
-		  </div>
 		</div>
 
 		<script src="/static/js/main.min.js"></script>

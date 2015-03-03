@@ -1,0 +1,462 @@
+
+/*
+** mixins.less
+** Project-specific mixins that all .less files should share.
+*/
+
+.transition-transform(@lapse: .3s, @ease: ease) {
+  -webkit-transition: -webkit-transform @lapse cubic-bezier(0.645,0.045,0.355,1), opacity .5s @ease;
+  -moz-transition: -moz-transform @lapse cubic-bezier(0.645,0.045,0.355,1), opacity .5s @ease;
+  -ms-transition: -ms-transform @lapse cubic-bezier(0.645,0.045,0.355,1), opacity .5s @ease;
+  -o-transition: -o-transform @lapse cubic-bezier(0.645,0.045,0.355,1), opacity .5s @ease;
+}
+
+.gray(@percent) {
+  color: lighten(@black, percentage(@percent / 100));
+}
+
+// .trbl(@all:0) {
+//   top: @all;
+//   right: @all;
+//   bottom: @all;
+//   left: @all;
+// }
+
+// .trbl(@vertical,@horizontal) {
+//   top: @vertical;
+//   right: @horizontal;
+//   bottom: @vertical;
+//   left: @horizontal;
+// }
+
+// .trbl(@t,@horizontal,@b) {
+//   top: @t;
+//   right: @horizontal;
+//   bottom: @b;
+//   left: @horizontal;
+// }
+
+// .trbl(@t,@r,@b,@l) {
+//   top: @t;
+//   right: @r;
+//   bottom: @b;
+//   left: @l;
+// }
+
+.no-underline {
+  text-decoration: none !important;
+}
+
+// .bordered (@color:black) {
+//   border: 1px solid @color;
+// }
+
+.sprite (@x, @y, @size) {
+   background-position: -(@x*@size) -(@y*@size);
+}
+
+.box-sizing (@type: border-box) {
+    -webkit-box-sizing: @type;
+    -moz-box-sizing:    @type;
+    box-sizing:         @type;
+}
+
+
+/***************************
+** Social
+*/
+
+// .btn-facebook {
+//  background: #2b4b90 !important;
+//  border-color: darken(#2b4b90,5%) !important;
+// }
+
+// .btn-twitter {
+//  background: #55ACEE !important;
+//  border-color: darken(#55ACEE,5%) !important;
+// }
+
+// .btn-gplus {
+//  background: #dd4b39 !important;
+//  border-color: darken(#dd4b39,5%) !important;
+// }
+
+.reset-button {
+  padding: 0;
+  margin: 0;
+  outline: none;
+  border: none;
+  background: none;
+}
+
+.ultra-reset-button {
+  background:none;
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.428571429;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+.full-reset-button {
+  .ultra-reset-button;
+}
+
+.unselectable {
+    /* For Opera and <= IE9, we need to add unselectable="on" attribute onto each element */
+    /* Check this site for more details: http://help.dottoro.com/lhwdpnva.php */
+    -moz-user-select: none; /* These user-select properties are inheritable, used to prevent text selection */
+    -webkit-user-select: none;
+    -ms-user-select: none; /* From IE10 only */
+    user-select: none; /* Not valid CSS yet, as of July 2012 */
+    -webkit-user-drag: none; /* Prevents dragging of images/divs etc */
+    user-drag: none;
+}
+
+
+.background-size (@prop) {
+  -webkit-background-size: @prop;
+  -moz-background-size: @prop;
+  -o-background-size: @prop;
+  background-size: @prop;
+}
+
+.transition (@prop: all, @time: .2s, @ease: linear) {
+    -webkit-transition: @prop @time @ease;
+    -moz-transition: @prop @time @ease;
+    -o-transition: @prop @time @ease;
+    -ms-transition: @prop @time @ease;
+    transition: @prop @time @ease;
+}
+
+.transition(@duration:0.2s, @ease:ease-out) {
+  -webkit-transition: all @duration @ease;
+  -moz-transition: all @duration @ease;
+  -o-transition: all @duration @ease;
+  transition: all @duration @ease;
+}
+
+
+.transform (@rotate: 90deg, @scale: 1, @skew: 1deg, @translate: 10px) {
+    -webkit-transform: rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
+    -moz-transform: rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
+    -o-transform: rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
+    -ms-transform: rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
+    transform: rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
+}
+
+.border-radius (@r) {
+    -webkit-border-radius: @r;
+    -moz-border-radius: @r;
+    border-radius: @r;
+}
+
+.blur (@p: 3px) {
+  -webkit-filter: blur(@p);
+  -moz-filter: blur(@p);
+  -o-filter: blur(@p);
+  -ms-filter: blur(@p);
+  filter: blur(@p);
+  filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
+}
+
+.unblur () {
+  -webkit-filter: blur(0);
+  -moz-filter: blur(0);
+  -o-filter: blur(0);
+  -ms-filter: blur(0);
+  filter: blur(0);
+  filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='0');
+}
+
+
+
+// Shadow stuff.
+
+.no-box-shadow () {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.no-text-shadow() {
+  // -webkit-text-shadow: none;
+  -moz-text-shadow: none;
+  text-shadow: none;
+}
+
+/*
+** SHADOW
+*/
+
+/*
+** .box-shadow. use:
+** ·(@blur, @blackShadowOpacity)
+** ·(@dx, @dy, @blur, @blackShadowOpacity)
+** ·(@dx, @dy, @blur, @shadowColor)
+** ·(@dx, @dy, @dist, @blackShadowOpacity)
+** ·(@dx, @dy, @dist, @shadowColor)
+**/
+
+.box-shadow (@blur: 5px, @alpha: .5) when (isnumber(@alpha)) {
+  -webkit-box-shadow: 0 0 @blur rgba(0, 0, 0, @alpha);
+  -moz-box-shadow: 0 0 @blur rgba(0, 0, 0, @alpha);
+  box-shadow: 0 0 @blur rgba(0, 0, 0, @alpha);
+}
+
+.box-shadow (@x: 0px, @y: 3px, @blur: 5px, @alpha: .5) when not (iscolor(@alpha)) {
+  -webkit-box-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+  -moz-box-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+  box-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+}
+
+.box-shadow (@x: 0px, @y: 3px, @blur: 5px, @alpha: black) when (iscolor(@alpha)) {
+  -webkit-box-shadow: @x @y @blur @alpha;
+  -moz-box-shadow: @x @y @blur @alpha;
+  box-shadow: @x @y @blur @alpha;
+}
+
+.box-shadow (@x: 0px, @y: 3px, @d:0, @blur: 5px, @alpha: .5) when not (iscolor(@alpha)) {
+  -webkit-box-shadow: @x @y @d @blur rgba(0, 0, 0, @alpha);
+  -moz-box-shadow: @x @y @d @blur rgba(0, 0, 0, @alpha);
+  box-shadow: @x @y @d @blur rgba(0, 0, 0, @alpha);
+}
+
+.box-shadow (@x: 0px, @y: 3px, @d:0, @blur: 5px, @alpha: black) when (iscolor(@alpha)) {
+  -webkit-box-shadow: @x @y @d @blur @alpha;
+  -moz-box-shadow: @x @y @d @blur @alpha;
+  box-shadow: @x @y @d @blur @alpha;
+}
+
+/*
+** .text-shadow. use:
+** ·(@blur, @blackShadowOpacity)
+** ·(@dx, @dy, @blur, @blackShadowOpacity)
+** ·(@dx, @dy, @blur, @shadowColor)
+**/
+
+.text-shadow (@blur: 5px, @alpha: 1) when (isnumber(@alpha)) {
+  // -webkit-text-shadow: 0 0 @blur rgba(0, 0, 0, @alpha);
+  -moz-text-shadow: 0 0 @blur rgba(0, 0, 0, @alpha);
+  text-shadow: 0 0 @blur rgba(0, 0, 0, @alpha);
+}
+
+.text-shadow (@x: 0px, @y: 3px, @blur: 5px, @color: black) when (iscolor(@color)) {
+  // -webkit-text-shadow: @x @y @blur @color;
+  -moz-text-shadow: @x @y @blur @color;
+  text-shadow: @x @y @blur @color;
+}
+
+.text-shadow (@x: 0px, @y: 3px, @blur: 5px, @alpha: .5) when (isnumber(@alpha)) {
+  // -webkit-text-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+  -moz-text-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+  text-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+}
+
+/*
+** .inner-shadow. use:
+** ·(@dx, @dy, @blackShadowOpacity)
+** ·(@dx, @dy, @shadowColor)
+** ·(@dx, @dy, @blur, @blackShadowOpacity)
+** ·(@dx, @dy, @blur, @shadowColor)
+**/
+
+.inner-shadow(@blur, @alpha) when (isnumber(@alpha)) {
+  -webkit-box-shadow: inset 0 0 @blur rgba(0, 0, 0, @alpha);
+  -moz-box-shadow: inset 0 0 @blur rgba(0, 0, 0, @alpha);
+  box-shadow: inset 0 0 @blur rgba(0, 0, 0, @alpha);
+}
+
+.inner-shadow(@horizontal, @vertical, @blur, @delta, @alpha) when (isnumber(@alpha)) {
+  -webkit-box-shadow: inset @horizontal @vertical @blur @delta rgba(0, 0, 0, @alpha);
+  -moz-box-shadow: inset @horizontal @vertical @blur @delta rgba(0, 0, 0, @alpha);
+  box-shadow: inset @horizontal @vertical @blur @delta rgba(0, 0, 0, @alpha);
+}
+
+.inner-shadow(@blur, @color) when (iscolor(@color)) {
+  -webkit-box-shadow: inset 0 0 @blur @color;
+  -moz-box-shadow: inset 0 0 @blur @color;
+  box-shadow: inset 0 0 @blur @color;
+}
+
+.inner-shadow(@horizontal, @vertical, @alpha) when (isnumber(@alpha)) {
+  -webkit-box-shadow: inset @horizontal @vertical rgba(0, 0, 0, @alpha);
+  -moz-box-shadow: inset @horizontal @vertical rgba(0, 0, 0, @alpha);
+  box-shadow: inset @horizontal @vertical rgba(0, 0, 0, @alpha);
+}
+
+.inner-shadow(@horizontal, @vertical, @color) when (iscolor(@color)) {
+  -webkit-box-shadow: inset @horizontal @vertical @color;
+  -moz-box-shadow: inset @horizontal @vertical @color;
+  box-shadow: inset @horizontal @vertical @color;
+}
+
+.inner-shadow(@horizontal, @vertical, @blur, @alpha) when (isnumber(@alpha)) {
+  -webkit-box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
+  -moz-box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
+  box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
+}
+
+.inner-shadow(@horizontal, @vertical, @blur, @color) when (iscolor(@color)) {
+  -webkit-box-shadow: inset @horizontal @vertical @blur @color;
+  -moz-box-shadow: inset @horizontal @vertical @blur @color;
+  box-shadow: inset @horizontal @vertical @blur @color;
+}
+
+
+/*---------------------------------------------------
+    LESS Elements 0.9
+  ---------------------------------------------------
+    A set of useful LESS mixins
+    More info at: http://lesselements.com
+  ---------------------------------------------------*/
+.gradient(@color: #F5F5F5, @start: #EEE, @stop: #FFF) {
+  background: @color;
+  background: -webkit-gradient(linear, left bottom, left top,
+              color-stop(0, @start), color-stop(1, @stop));
+  background: -ms-linear-gradient(bottom, @start, @stop);
+  background: -moz-linear-gradient(center bottom, @start 0%, @stop 100%);
+  background: -o-linear-gradient(@stop, @start);
+  filter: e(%(
+"progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",
+@stop,@start));
+}
+.bw-gradient(@color: #F5F5F5, @start: 0, @stop: 255) {
+  background: @color;
+  background: -webkit-gradient(linear, left bottom, left top,
+                                color-stop(0, rgb(@start,@start,@start)),
+                                color-stop(1, rgb(@stop,@stop,@stop)));
+  background: -ms-linear-gradient(bottom, rgb(@start,@start,@start) 0%,
+                                  rgb(@stop,@stop,@stop) 100%);
+  background: -moz-linear-gradient(center bottom, rgb(@start,@start,@start) 0%,
+                                    rgb(@stop,@stop,@stop) 100%);
+  background: -o-linear-gradient(rgb(@stop,@stop,@stop),
+                                 rgb(@start,@start,@start));
+  filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",rgb(@stop,@stop,@stop),rgb(@start,@start,@start)));
+}
+.bordered(@top-color: #EEE, @right-color: #EEE, @bottom-color: #EEE, @left-color: #EEE) {
+  border-top: solid 1px @top-color;
+  border-left: solid 1px @left-color;
+  border-right: solid 1px @right-color;
+  border-bottom: solid 1px @bottom-color;
+}
+.drop-shadow(@x-axis: 0, @y-axis: 1px, @blur: 2px, @alpha: 0.1) {
+  -webkit-box-shadow: @x-axis @y-axis @blur rgba(0, 0, 0, @alpha);
+  -moz-box-shadow: @x-axis @y-axis @blur rgba(0, 0, 0, @alpha);
+  box-shadow: @x-axis @y-axis @blur rgba(0, 0, 0, @alpha);
+}
+.rounded(@radius: 2px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
+}
+.border-radius(@topright: 0, @bottomright: 0, @bottomleft: 0, @topleft: 0) {
+  -webkit-border-top-right-radius: @topright;
+  -webkit-border-bottom-right-radius: @bottomright;
+  -webkit-border-bottom-left-radius: @bottomleft;
+  -webkit-border-top-left-radius: @topleft;
+  -moz-border-radius-topright: @topright;
+  -moz-border-radius-bottomright: @bottomright;
+  -moz-border-radius-bottomleft: @bottomleft;
+  -moz-border-radius-topleft: @topleft;
+  border-top-right-radius: @topright;
+  border-bottom-right-radius: @bottomright;
+  border-bottom-left-radius: @bottomleft;
+  border-top-left-radius: @topleft;
+  .background-clip(padding-box);
+}
+.opacity(@opacity: 0.5) {
+  -moz-opacity: @opacity;
+  -khtml-opacity: @opacity;
+  -webkit-opacity: @opacity;
+  opacity: @opacity;
+  @opperc: @opacity * 100;
+  -ms-filter: ~"progid:DXImageTransform.Microsoft.Alpha(opacity=@{opperc})";
+  filter: ~"alpha(opacity=@{opperc})";
+}
+.transition-duration(@duration: 0.2s) {
+  -moz-transition-duration: @duration;
+  -webkit-transition-duration: @duration;
+  -o-transition-duration: @duration;
+  transition-duration: @duration;
+}
+.transform(...) {
+  -webkit-transform: @arguments;
+  -moz-transform: @arguments;
+  -o-transform: @arguments;
+  -ms-transform: @arguments;
+  transform: @arguments;
+}
+.rotation(@deg:5deg){
+  .transform(rotate(@deg));
+}
+.scale(@ratio:1.5){
+  .transform(scale(@ratio));
+}
+.transition(@duration:0.2s, @ease:ease-out) {
+  -webkit-transition: all @duration @ease;
+  -moz-transition: all @duration @ease;
+  -o-transition: all @duration @ease;
+  transition: all @duration @ease;
+}
+.inner-shadow(@horizontal:0, @vertical:1px, @blur:2px, @alpha: 0.4) {
+  -webkit-box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
+  -moz-box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
+  box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
+}
+.box-shadow(@arguments) {
+  -webkit-box-shadow: @arguments;
+  -moz-box-shadow: @arguments;
+  box-shadow: @arguments;
+}
+.box-sizing(@sizing: border-box) {
+  -ms-box-sizing: @sizing;
+  -moz-box-sizing: @sizing;
+  -webkit-box-sizing: @sizing;
+  box-sizing: @sizing;
+}
+.user-select(@argument: none) {
+  -webkit-user-select: @argument;
+  -moz-user-select: @argument;
+  -ms-user-select: @argument;
+  user-select: @argument;
+}
+.columns(@colwidth: 250px, @colcount: 0, @colgap: 50px, @columnRuleColor: #EEE, @columnRuleStyle: solid, @columnRuleWidth: 1px) {
+  -moz-column-width: @colwidth;
+  -moz-column-count: @colcount;
+  -moz-column-gap: @colgap;
+  -moz-column-rule-color: @columnRuleColor;
+  -moz-column-rule-style: @columnRuleStyle;
+  -moz-column-rule-width: @columnRuleWidth;
+  -webkit-column-width: @colwidth;
+  -webkit-column-count: @colcount;
+  -webkit-column-gap: @colgap;
+  -webkit-column-rule-color: @columnRuleColor;
+  -webkit-column-rule-style: @columnRuleStyle;
+  -webkit-column-rule-width: @columnRuleWidth;
+  column-width: @colwidth;
+  column-count: @colcount;
+  column-gap: @colgap;
+  column-rule-color: @columnRuleColor;
+  column-rule-style: @columnRuleStyle;
+  column-rule-width: @columnRuleWidth;
+}
+.translate(@x:0, @y:0) {
+  .transform(translate(@x, @y));
+}
+.background-clip(@argument: padding-box) {
+  -moz-background-clip: @argument;
+  -webkit-background-clip: @argument;
+  background-clip: @argument;
+}

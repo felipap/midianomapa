@@ -2,9 +2,23 @@
 *~
 *.swp
 
+ignore
 node_modules
+bower_components
 env.js
+env.json
+s3.json
 libpeerconnection.log
+.DS_Store
+
+npm-debug.log
+
+.nodemonignore
+
+assets/js
+assets/css
+assets/fonts
 
 *.sublime-project
 *.sublime-workspace
+.sass-cache

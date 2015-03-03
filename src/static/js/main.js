@@ -26,6 +26,8 @@ var Bootstrap = require('bootstrap')
 var Handlebars = require('handlebars')
 var _ = require('lodash')
 var Backbone = require('backbone')
+$('body').tooltip({selector:'[data-toggle=tooltip]'});
+
 
 window._ = _;
 Backbone.$ = $;
@@ -66,7 +68,7 @@ window.Router = Backbone.Router.extend({
 		});
 
 		// this.geoLocate();
-		$("[data-action=geolocate]").click(_.bind(this.geoLocate, this, 9));
+		$("[data-action=centralize]").click(_.bind(this.geoLocate, this, 9));
 
 		this.date = new models.Date();
 		this.eventList = new models.EventList();
@@ -111,7 +113,8 @@ window.Router = Backbone.Router.extend({
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function (pos) {
 				var coord = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-				self.map.setCenter(coord); // self.map.setZoom(zoom || 4)
+				self.map.setCenter(coord);
+				self.map.setZoom(zoom || 4)
 			});
 		}
 	},
@@ -211,6 +214,16 @@ window.Router = Backbone.Router.extend({
 
 window.app = new Router();
 app.start();
+
+
+
+(function setCSRFToken () {
+	$.ajaxPrefilter(function(options, _, xhr) {
+		if (!options.crossDomain) {
+			xhr.setRequestHeader('csrf-token', $('meta[name=\'csrf-token\']').attr('content'));
+		}
+	});
+})();
 
 /* Listen for <ESC> while inputting event. Quit if so. */
 $(document).keyup(function(e){

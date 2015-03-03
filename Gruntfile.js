@@ -67,7 +67,7 @@ module.exports = function(grunt) {
 		nodemon: {
 			server: {
 				options: {
-					file: 'src/server.js',
+					file: 'master.js',
 					args: ['dev'],
 					nodeArgs: ['--debug'],
 					ignoredFiles: ['node_modules/**','src/static/**', 'src/views/**'],

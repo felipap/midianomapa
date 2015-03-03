@@ -1,44 +1,49 @@
 
-<% layout('mobile') -%>
-<% script("http://maps.googleapis.com/maps/api/js?key=AIzaSyByxi20qUAiWpTmUn9z2qi_iCGVyS_q-zE&sensor=true") %>
+{% extends "mobile.html" %}
+
+{% block scripts %}
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyByxi20qUAiWpTmUn9z2qi_iCGVyS_q-zE&sensor=true"></script>
+{% endblock %}
+
+{% block body %}
 
 <div class="wrapper col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
-	
+
 	<div class="logo pull-right">
 		<a href="/" class="no-underline"><i class="fa fa-map-marker fa-lg"></i></a>
 	</div>
 
 	<section class="user-info">
-			<a class="no-underline" target="_blank" href="<%= ninja.live_url %>">
+			<a class="no-underline" target="_blank" href="{{ ninja.live_url }}">
 				<div class="block">
-					<img class="thumbnail" src="<%= ninja.avatar_url %>" />
+					<img class="thumbnail" src="{{ ninja.avatar_url }}" />
 				</div>
 			</a>
 			<div class="block">
-				<% if (ninja.isLive) { %>
+				{% if ninja.isLive %}
 					<span data="name">
-						<a class="no-underline" target="_blank" href="<%= ninja.live_url %>">
-							@<%= ninja.screen_name %>
+						<a class="no-underline" target="_blank" href="{{ ninja.live_url }}">
+							@{{ ninja.screen_name }}
 						</a>
-						<i class="fa fa-share-square" data-action="share" data-text="Estou ao vivo em http://midianomapa.org#ninjas/<%= encodeURIComponent(ninja.id) %>" data-url="http://midianomapa.org#ninjas/<%= encodeURIComponent(ninja.id) %>"></i>
+						<i class="fa fa-share-square" data-action="share" data-text="Estou ao vivo em http://midianomapa.org#ninjas/{{ encodeURIComponent(ninja.id) }}" data-url="http://midianomapa.org#ninjas/{{ encodeURIComponent(ninja.id) }}"></i>
 					</span>
 					<span data="live-status" class="label label-success">Transmitindo ao vivo</span>
-				<% } else { %>
+				{% else %}
 					<span data="name">
-						<a class="no-underline" target="_blank" href="<%= ninja.live_url %>">
-							@<%= ninja.screen_name %></a>
+						<a class="no-underline" target="_blank" href="{{ ninja.live_url }}">
+							@{{ ninja.screen_name }}</a>
 					</span>
 					<span data="live-status" class="label label-danger">Não transmitindo</span>
-				<% } %>
-				<span data="viewers" class="label label-info"><span><%= ninja.live_viewers_count || 0 %></span> visualizando</span>
+				{% endif %}
+				<span data="viewers" class="label label-info"><span>{{ ninja.live_viewers_count|default(0) }}</span> visualizando</span>
 			</div>
 	</section>
 
-	<% if (ninja.isLive) { %>
+	{% if ninja.isLive %}
 
 		<section class="content">
 			<p class="visibility-status"></p>
-			
+
 			<div class="output success success-msg" style="display: none">
 				<button data-action='save-coords' class="btn pull-right">Salvar</button>
 				Sua localização atual é "<strong><span class="data-address"></span></strong>"?
@@ -49,27 +54,27 @@
 				Tivemos problemas para identificar a sua localização. <strong>O serviço de geolocalização do seu aparelho está ligado?</strong>
 			</div>
 		</section>
-		
+
 		<div id="map-wrapper">
 			<div id="map"></div>
 			<div style="display: none" class="blackout"></div>
 		</div>
-	
+
 		<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 		<script src="/static/js/lib/panel.js"></script>
-		<script>userPosition.set({lat:<%=ninja.lat%>,lng:<%=ninja.lng%>});timeout.start(<%= ninja.getTimeout() %>,<%=ninja.isVisible()%>);</script>
+		<script>userPosition.set({lat:{{ ninja.lat }},lng:{{ ninja.lng }}});timeout.start(<{{ ninja.getTimeout()  }},{{ ninja.isVisible() }});</script>
 		<script>
 			$('[data-action=share]').share();
 			function _cC(d) {if (d.islive !== 'undefined' && !d.islive) {window.location.reload();}; D = d; if (d.viewers !== undefined) { $('[data=viewers] span').html(d.viewers);}};
-			setInterval(function () {$.getScript("http://api.twitcasting.tv/api/livestatus?user="+encodeURIComponent('<%= ninja.id %>')+"&callback=_cC");},30*1000);
+			setInterval(function () {$.getScript("http://api.twitcasting.tv/api/livestatus?user="+encodeURIComponent('{{ ninja.id }}')+"&callback=_cC");},30*1000);
 		</script>
-	<% } else { %>
+	{% else %}
 		<h3><strong>Você não está online. :(<br> Volte quando estiver transmitindo.</strong></h3>
 		<script>
 			function _cC(d) {if (d.islive !== 'undefined' && d.islive) {window.location.reload();};if (d.viewers !== undefined) { $('[data=viewers] span').html(d.viewers);}};
-			setInterval(function () {$.getScript("http://api.twitcasting.tv/api/livestatus?user="+encodeURIComponent('<%= ninja.id %>')+"&callback=_cC");},30*1000);
+			setInterval(function () {$.getScript("http://api.twitcasting.tv/api/livestatus?user="+encodeURIComponent('{{ ninja.id }}')+"&callback=_cC");},30*1000);
 		</script>
-	<% } %>
+	{% endif %}
 
 	<div>
 		<a href="/logout" class="btn btn-default btn-lg btn-block" data-action="logout">Logout</a>
@@ -80,3 +85,5 @@
 	</div>
 
 </div>
+
+{% endblock %}

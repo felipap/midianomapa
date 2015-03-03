@@ -6,6 +6,7 @@
 @import "common.less";
 @import "navbar.less";
 
+
 html {
 	height: 100%;
 }
@@ -13,7 +14,7 @@ html {
 body {
 	.transition(padding,.2s,linear);
 	height: 100%; margin: 0; padding: 0;
-	font-family: Montserrat, "Open Sans", Arial, sans-serif;
+	font-family: Montserrat, "Open Sans", sans-serif;
 	overflow-y: hidden;
 }
 
@@ -27,6 +28,15 @@ body {
 	&:hover {opacity:1;}
 }
 
+.modal-backdrop {
+	height: 100%;
+}
+
+.modal {
+	.modal-content {
+		border-radius: 3px;
+	}
+}
 
 #calendar {
 	display: none;
@@ -332,6 +342,10 @@ body {
 		.box-shadow(0,0,10px,.4);
 		.transition(all, 0.5s, ease);
 
+		.bar {
+			width: 671px;
+		}
+
 		label {
 			position: absolute;
 			top: -39px;
@@ -341,8 +355,11 @@ body {
 
 		input {
 			width: 590px;
-			padding: 10px;
+			padding: 0 10px;
+			line-height: 50px;
+
 			border: none;
+			vertical-align: middle;
 			outline: none;
 			text-align: right;
 		}
@@ -352,9 +369,10 @@ body {
 
 			.reset-button();
 			width: 80px;
+			line-height: 50px;
 			background: #2ecc71;
 			color: white;
-			padding: 10px 0;
+			padding: 0;
 			margin-left: -5px;
 			&:hover { background: #3edc81; }
 			&:active { .inner-shadow(0,0,5px,.4); }
@@ -371,6 +389,73 @@ body {
 				background: #d0493b; .fa:before { content: "\f014"; }
 			}
 		}
+	}
+}
+
+body {
+	.tooltip {
+		font-family: Montserrat, "Open Sans", sans-serif;
+	}
+}
+
+.navigation-icons {
+	position: absolute;
+	z-index: 1;
+	bottom: 20px;
+	right: 20px;
+	width: 50px;
+
+	& > button {
+		.ultra-reset-button;
+		vertical-align: middle;
+		color: white;
+		padding: 0;
+		margin: 0;
+		.box-shadow(0, 0, 5px, rgba(0,0,0,.4));
+		border-radius: 50px;
+		height: 50px;
+		width: 50px;
+		display: block;
+		float: right;
+		.transition;
+
+		margin-top: 10px;
+
+		&:focus {
+			border: 0;
+			outline: 0;
+		}
+		&:hover {
+			.box-shadow(0, 0, 5px, rgba(0,0,0,.1));
+			// height: 52px;
+			// width: 52px;
+			// margin-bottom: -1px;
+			// margin-top: 9px;
+			// margin-right: -1px;
+		}
+		i {
+			font-size: 25px;
+		}
+	}
+
+	[data-action=add-event] {
+		background: #2fade5;
+	}
+
+	[data-action=add-camera] {
+		background: #3ECC5A;
+	}
+
+	[data-action=list-events] {
+		background: #FE3F44;
+	}
+
+	[data-action=show-calendar] {
+		background: #e74c3c;
+	}
+
+	[data-action=centralize] {
+		background: #444;
 	}
 }
 

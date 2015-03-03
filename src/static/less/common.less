@@ -6,6 +6,106 @@
 @import "font-awesome/font-awesome.less";
 @import "bstp.less";
 @import "snshare.less";
+@import "mixins.less";
+@import "icons.less";
+
+/**
+ * Close icons
+ * Taken as it was from bootstrap
+ */
+
+.close {
+  float: right;
+  font-size: (@font-size-base * 1.5);
+  font-weight: @close-font-weight;
+  line-height: 1;
+  color: @close-color;
+  text-shadow: @close-text-shadow;
+  .opacity(.2);
+
+  &:hover,
+  &:focus {
+    color: @close-color;
+    text-decoration: none;
+    cursor: pointer;
+    .opacity(.5);
+  }
+
+  // Additional properties for button version
+  // iOS requires the button element instead of an anchor tag.
+  // If you want the anchor version, it requires `href="#"`.
+  button& {
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+  }
+}
+
+
+.ultra-reset-button {
+  background:none;
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.428571429;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+button, .button {
+	border: none;
+	display: inline-block;
+	margin-bottom: 0; // For input.btn
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	white-space: nowrap;
+	border: none;
+	background-image: none;
+	padding: 6px 12px;
+	color: @btn-default-color;
+	font-weight: @btn-font-weight;
+	color: #222;
+	line-height: 1;
+	border-radius: 2px;
+	.user-select(none);
+
+	&:focus {
+		.tab-focus();
+	}
+
+	&:hover, &:focus {
+		// color: @btn-default-color;
+		text-decoration: none;
+	}
+
+	&.disabled, &[disabled], fieldset[disabled] & {
+		cursor: not-allowed;
+		pointer-events: none; // Future-proof disabling of clicks
+		.opacity(.65);
+		.box-shadow(none);
+	}
+
+	&:active, &.active {
+		outline: 0;
+		background-image: none;
+		.box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+	}
+}
+
 
 .btn-facebook {
 	background: #2b4b90 !important;

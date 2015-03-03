@@ -30,7 +30,7 @@ Ninjas = {
 
 	login_get: (req, res) ->
 		req.logout?()
-		return res.render('login')
+		return res.render('mobile/login')
 
 	logout_get: (req, res) ->
 		req.user.lat = null
@@ -59,7 +59,7 @@ Ninjas = {
 			if err
 				console.log err
 				req.flash('error', err.message or "Ops! Detectamos algum erro aqui...")
-			return res.render('panel', {
+			return res.render('mobile/panel', {
 				ninja: req.user,
 				page_title: if req.user.isLive then ''+req.user.id+' está ao vivo' else undefined,
 				messages: req.flash(),
