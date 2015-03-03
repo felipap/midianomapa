@@ -36,23 +36,19 @@
 		        <h4 class="modal-title">Sobre o site</h4>
 		      </div>
 		      <div class="modal-body">
-						<p>O midianomapa.org te mostra onde e quando vão acontecer as próximas manifestações populares pelo Brasil. O programa procura por eventos públicos e os identifica no mapa no <strong>Facebook</strong>. Além disso, <strong>você também pode colocar o seu evento aqui.</strong> Se você cobre as manifestações, pode até colocar o seu stream no mapa!</p>
-
-						<h4><strong>Quer colocar a sua cobertura no mapa?</strong></h4>
-						<p>Clique no botão de <strong>Adicionar Cobertura</strong> no topo do site. Para isso você deve ter uma conta no TwitCasting.
+						<p>O midianomapa.org te mostra onde e quando vão acontecer as próximas manifestações pelo Brasil, segundo o Facebook. O nosso programa procura por eventos públicos e os identifica no mapa. E se você cobre as manifestações, pode colocar o link para o seu stream no mapa! Para isso, clique no botão amarelo com a câmera. (você precisa ter uma conta no TwitCasting)
 						<div>
 							<div><strong>midianomapa.org &reg; 2013-2015</strong></div>
 							<div>Esse projeto é <a href="//github.com/f03lipe/midianomapa">open source</a>.</div>
 						</div>
+						<p>
+							<small>status: {{ stats.events }} eventos {% if (stats.ninjas) %}e {{ stats.ninjas }} ninja{{ stats.ninjas>1?'s':'' }} {% endif %} distribuídos pelo Brasil.</small>
+						</p>
 						<div>
-							<div>
-								<small>status: {{ stats.events }} eventos {% if (stats.ninjas) %}e {{ stats.ninjas }} ninja{{ stats.ninjas>1?'s':'' }} {% endif %} distribuídos pelo Brasil.</small>
-							</div>
-						</div>
-						<div>
-							<div id="social-share">
 								<!-- <div class="g-plus" data-action="share" data-annotation="bubble"></div> -->
 								<div class="fb-like" data-href="http://www.midianomapa.org" data-width="150" data-height="25" data-colorscheme="light" data-layout="button_count" data-action="recommend" data-show-faces="true" data-send="false"></div>
+								<br />
+								<br />
 								<a href="https://twitter.com/share" class="twitter-share-button" data-text="Esse site mostra os protestos acontecendo no Brasil usando Facebook! Olha só: midianomapa.org" data-hashtags="midianomapa">Tweet</a>
 							</div>
 			      </div>
