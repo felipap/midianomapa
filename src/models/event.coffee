@@ -36,6 +36,7 @@ These fields are not always complete/existent.
 mongoose = require 'mongoose'
 request = require 'request'
 crypto = require 'crypto'
+nconf = require 'nconf'
 memjs = require 'memjs'
 async = require 'async'
 _ = require 'underscore'
@@ -67,7 +68,7 @@ eventExceptions = {
 		name: 'cantFetch'
 		passes: (data) -> not data.error
 		data_attr: 'error'
-		silent: true
+		silent: false
 	}
 	isEvent: { 										# Object isn't an event.
 		name: 'invalidObject'
@@ -196,7 +197,7 @@ fbRequester = do ->
 			{url: 'https://graph.facebook.com/'+path, json: true, qs: qs},
 			(err, res, body) ->
 				if loggable
-					logger.info('Path reached', res.request.uri.host+res.request.uri.pathname)
+					logger.info('Path reached', res and res.request.uri.host+res.request.uri.pathname)
 					if err
 						logger.error('→ error:', err)
 				cb.apply(cb, arguments)
@@ -206,7 +207,7 @@ fbRequester = do ->
 		getEventCount: (id) ->
 			d = new RequestDeferer().validate(fbEventValidator('fetchable'))
 			doFbRequest(id+'/attending',
-				{access_token:process.env.facebook_app_access_token,summary:1},
+				{access_token:nconf.get('facebook_app_access_token'),summary:1},
 				((err, res, data) -> d.resolve(err, data))
 			)
 			return d
@@ -223,14 +224,14 @@ fbRequester = do ->
 			d = new RequestDeferer().validate(fbEventValidator('fetchable','isEvent','locatable'))
 
 			doFbRequest(id,
-				{access_token:process.env.facebook_app_access_token,metadata:1},
+				{access_token:nconf.get('facebook_app_access_token'),metadata:1},
 				(err, res, body) ->
 					# Request count of people going to this event.
 					if err
-						db.resolve(err, body)
+						db.resolve(err)
 						return
 					doFbRequest(id+'/attending',
-						{access_token:process.env.facebook_app_access_token,summary:1},
+						{access_token:nconf.get('facebook_app_access_token'),summary:1},
 						(e, r, countBody)->
 							# Extend original body with count and deferrer.resolve(<arguments>).
 							d.resolve(e, _.extend(body, {count: countBody?.summary?.count}))
@@ -280,7 +281,7 @@ gMapsRequester = do ->
 
 			doMapsRequest(location,
 				(err, res, data) ->
-					if data.status isnt 'OK'
+					if not data or data.status isnt 'OK'
 						return d.resolve({name:'maps_notOK'})
 					results = data.results
 					if err or _.size(results) > 1 # If multiple results, we can't locate.
@@ -341,7 +342,13 @@ EventSchema.statics.crawlAndAdd = (tag, access_token, callback) ->
 						.fail((err) -> next())
 
 			fbRequester.getEvent(event.id, access_token)
-				.validate(fbEventValidator('validTimezone','notOutdated','withinTwoMonths','bigEnough30','isntSPAM','notBlocked'))
+				.validate(
+					fbEventValidator('validTimezone',
+						'notOutdated',
+						'withinTwoMonths',
+						'bigEnough30',
+						'isntSPAM',
+						'notBlocked'))
 				.done(onGetValidEvent)
 				.fail(genericErrorHandler((err) -> (next())))
 		), callback

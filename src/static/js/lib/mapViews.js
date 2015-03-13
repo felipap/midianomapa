@@ -114,7 +114,7 @@ var MapsEventMarkerView = GenericMapsMarkerView.extend({
           sub: this.model.get('count')>10000?'Tá indo gente pra dédéu!':'',
           rank: mm(0,Math.floor(Math.log(this.model.get('count'))/2),7),
         },
-        description: this.model.get('description').split(' ').slice(0,20).join(' '),
+        description: this.model.get('description').slice(0,1000).split(' ').slice(0,100).join(' '),
         reviewed: this.model.get('reviewed'),
         facebookUrl: this.model.get('facebookUrl'),
         url: this.model.get('url'),

@@ -44,7 +44,6 @@ module.exports = RequestDeferer = ->
 
 			# Test for request error or run a more specific test (if available).
 			if err or (err = val(data))
-				console.log('fail', err)
 				t(err) for t in cb['fail'] # Call functions in cb.fail
 			else
 				t(data) for t in cb['done'] # Call functions in cb.done

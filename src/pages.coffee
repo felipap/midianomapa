@@ -106,25 +106,26 @@ Events = {
 			res.end(JSON.stringify(events))
 
 	put: (req, res) ->
-		Event.createFromFBId(req.body.id,
-			(err, obj, isNew) ->
-				if err
-					console.log(err)
-					switch typeof translt[err.name]
-						when 'undefined' then message = err.message or 'Algum erro ocorreu.'
-						when 'string' then message = translt[err.name]
-						when 'function' then message = translt[err.name](err)
-					res.status(400)
-						.end(JSON.stringify({
-							error: true,
-							message: message,
-						}))
-				else
-					Event.flushCache()
-					obj = obj.toJSON() # Otherwise the next line won't work.
-					obj.isNew = isNew
-					res.end(JSON.stringify(obj));
-			)
+		res.end()
+		# Event.createFromFBId(req.body.id,
+		# 	(err, obj, isNew) ->
+		# 		if err
+		# 			console.log(err)
+		# 			switch typeof translt[err.name]
+		# 				when 'undefined' then message = err.message or 'Algum erro ocorreu.'
+		# 				when 'string' then message = translt[err.name]
+		# 				when 'function' then message = translt[err.name](err)
+		# 			res.status(400)
+		# 				.end(JSON.stringify({
+		# 					error: true,
+		# 					message: message,
+		# 				}))
+		# 		else
+		# 			Event.flushCache()
+		# 			obj = obj.toJSON() # Otherwise the next line won't work.
+		# 			obj.isNew = isNew
+		# 			res.end(JSON.stringify(obj));
+		# 	)
 
 	block: (req, res) ->
 		if req.params.id
@@ -148,8 +149,8 @@ Events = {
 
 	search_get: (req, res) ->
 		access_token = req.query.access_token or ''
-		# tags = ['passeata','protesto','manifestação','ato+apoio','ato+contra','ato+em','mobilização+contra']
-		tags = ['passeata']
+		tags = ['passeata','protesto','manifestação','ato+apoio','ato+contra','ato+em','mobilização+contra']
+		# tags = ['passeata']
 
 		res.connection.setTimeout(0)
 		async.mapSeries tags, ((tag, next) ->
